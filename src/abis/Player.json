@@ -1,0 +1,2472 @@
+{
+  "contractName": "Player",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_playerAddress",
+          "type": "address"
+        },
+        {
+          "internalType": "contract GoBang",
+          "name": "_gobang",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "internalType": "contract GoBang",
+          "name": "_gobang",
+          "type": "address"
+        }
+      ],
+      "name": "setGoBang",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [],
+      "name": "callWithdraw",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "success",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "fee",
+          "type": "uint256"
+        }
+      ],
+      "name": "join",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "success",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "metadata": "{\"compiler\":{\"version\":\"0.5.16+commit.9c3226ce\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_playerAddress\",\"type\":\"address\"},{\"internalType\":\"contract GoBang\",\"name\":\"_gobang\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"constant\":false,\"inputs\":[],\"name\":\"callWithdraw\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"success\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"fee\",\"type\":\"uint256\"}],\"name\":\"join\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"success\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"internalType\":\"contract GoBang\",\"name\":\"_gobang\",\"type\":\"address\"}],\"name\":\"setGoBang\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"methods\":{}},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"project:/src/contracts/Player.sol\":\"Player\"},\"evmVersion\":\"istanbul\",\"libraries\":{},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"project:/src/contracts/ERC721Full.sol\":{\"keccak256\":\"0x1ff336131619880c0d88b63c7ec17fd8341a9e5a8528d3e575cdbb53358263b1\",\"urls\":[\"bzz-raw://eb8125668f49f0a63ec8e252cbf663d74f7a108a13a19d5710122737a0ffd38a\",\"dweb:/ipfs/QmWcr8gNQEPU6wFaJHBAdXq8yiC6YCJHjvA3bagud7NyoB\"]},\"project:/src/contracts/GoBang.sol\":{\"keccak256\":\"0xb3f4c5e5bcd0157ad13cdc7e1c78b0584b0703beaf5497c45578be89a94373be\",\"urls\":[\"bzz-raw://277122233c86a5c9ff84f990bce05771561dabe8192db075287459c42f1d2443\",\"dweb:/ipfs/QmTRPmzWj4KHH1pg3L4vxTHd4K7orJat6i8xrxRog6srES\"]},\"project:/src/contracts/Player.sol\":{\"keccak256\":\"0x8f16172a997aac1e47422557830622b4f798576c06e9b6eaf4d8d36390077de6\",\"urls\":[\"bzz-raw://89af4f2a069f024b2f164207900806bb85b9e595731a680b184a0380bd7557b9\",\"dweb:/ipfs/QmZ5fzckSndDctFsULEK6oPFjQkGiuXkDTktDeXevXsw7o\"]}},\"version\":1}",
+  "bytecode": "0x608060405234801561001057600080fd5b5060405161052f38038061052f8339818101604052604081101561003357600080fd5b81019080805190602001909291908051906020019092919050505061005d816100a560201b60201c565b81600160006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff16021790555050506100e8565b806000806101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff16021790555050565b610438806100f76000396000f3fe608060405234801561001057600080fd5b50600436106100415760003560e01c8063049878f31461004657806315e3dd0e1461008c578063dad901be146100d0575b600080fd5b6100726004803603602081101561005c57600080fd5b81019080803590602001909291905050506100f2565b604051808215151515815260200191505060405180910390f35b6100ce600480360360208110156100a257600080fd5b81019080803573ffffffffffffffffffffffffffffffffffffffff16906020019092919050505061025b565b005b6100d861029e565b604051808215151515815260200191505060405180910390f35b60008060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff168262030d40906040516024016040516020818303038152906040527fb688a363000000000000000000000000000000000000000000000000000000007bffffffffffffffffffffffffffffffffffffffffffffffffffffffff19166020820180517bffffffffffffffffffffffffffffffffffffffffffffffffffffffff83818316178352505050506040518082805190602001908083835b602083106101e857805182526020820191506020810190506020830392506101c5565b6001836020036101000a038019825116818451168082178552505050505050905001915050600060405180830381858888f193505050503d806000811461024b576040519150601f19603f3d011682016040523d82523d6000602084013e610250565b606091505b505080915050919050565b806000806101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff16021790555050565b60008060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1662030d406040516024016040516020818303038152906040527f3ccfd60b000000000000000000000000000000000000000000000000000000007bffffffffffffffffffffffffffffffffffffffffffffffffffffffff19166020820180517bffffffffffffffffffffffffffffffffffffffffffffffffffffffff83818316178352505050506040518082805190602001908083835b60208310610392578051825260208201915060208101905060208303925061036f565b6001836020036101000a03801982511681845116808217855250505050505090500191505060006040518083038160008787f1925050503d80600081146103f5576040519150601f19603f3d011682016040523d82523d6000602084013e6103fa565b606091505b5050809150509056fea265627a7a723158205006704cf6320b2747a794026a4096ee8c9bcea8b8bb228e7ead4398b7ff116c64736f6c63430005100032",
+  "deployedBytecode": "0x608060405234801561001057600080fd5b50600436106100415760003560e01c8063049878f31461004657806315e3dd0e1461008c578063dad901be146100d0575b600080fd5b6100726004803603602081101561005c57600080fd5b81019080803590602001909291905050506100f2565b604051808215151515815260200191505060405180910390f35b6100ce600480360360208110156100a257600080fd5b81019080803573ffffffffffffffffffffffffffffffffffffffff16906020019092919050505061025b565b005b6100d861029e565b604051808215151515815260200191505060405180910390f35b60008060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff168262030d40906040516024016040516020818303038152906040527fb688a363000000000000000000000000000000000000000000000000000000007bffffffffffffffffffffffffffffffffffffffffffffffffffffffff19166020820180517bffffffffffffffffffffffffffffffffffffffffffffffffffffffff83818316178352505050506040518082805190602001908083835b602083106101e857805182526020820191506020810190506020830392506101c5565b6001836020036101000a038019825116818451168082178552505050505050905001915050600060405180830381858888f193505050503d806000811461024b576040519150601f19603f3d011682016040523d82523d6000602084013e610250565b606091505b505080915050919050565b806000806101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff16021790555050565b60008060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1662030d406040516024016040516020818303038152906040527f3ccfd60b000000000000000000000000000000000000000000000000000000007bffffffffffffffffffffffffffffffffffffffffffffffffffffffff19166020820180517bffffffffffffffffffffffffffffffffffffffffffffffffffffffff83818316178352505050506040518082805190602001908083835b60208310610392578051825260208201915060208101905060208303925061036f565b6001836020036101000a03801982511681845116808217855250505050505090500191505060006040518083038160008787f1925050503d80600081146103f5576040519150601f19603f3d011682016040523d82523d6000602084013e6103fa565b606091505b5050809150509056fea265627a7a723158205006704cf6320b2747a794026a4096ee8c9bcea8b8bb228e7ead4398b7ff116c64736f6c63430005100032",
+  "sourceMap": "50:696:5:-;;;121:138;8:9:-1;5:2;;;30:1;27;20:12;5:2;121:138:5;;;;;;;;;;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;121:138:5;;;;;;;;;;;;;;;;;;;;;;;;;192:18;202:7;192:9;;;:18;;:::i;:::-;237:14;221:13;;:30;;;;;;;;;;;;;;;;;;121:138;;50:696;;265:77;327:7;318:6;;:16;;;;;;;;;;;;;;;;;;265:77;:::o;50:696::-;;;;;;;",
+  "deployedSourceMap": "50:696:5:-;;;;8:9:-1;5:2;;;30:1;27;20:12;5:2;50:696:5;;;;;;;;;;;;;;;;;;;;;;;;;;;;;540:164;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;540:164:5;;;;;;;;;;;;;;;;;:::i;:::-;;;;;;;;;;;;;;;;;;;;;;;265:77;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;265:77:5;;;;;;;;;;;;;;;;;;;:::i;:::-;;375:159;;;:::i;:::-;;;;;;;;;;;;;;;;;;;;;;;540:164;580:12;626:6;;;;;;;;;;;618:20;;645:3;654:6;618:43;662:33;;;;;;49:4:-1;39:7;30;26:21;22:32;13:7;6:49;662:33:5;;;;;;;38:4:-1;29:7;25:18;67:10;61:17;96:58;199:8;192:4;186;182:15;179:29;167:10;160:49;0:215;;;662:33:5;618:78;;;;;;;;;;;;;36:153:-1;66:2;61:3;58:11;36:153;;182:3;176:10;171:3;164:23;98:2;93:3;89:12;82:19;;123:2;118:3;114:12;107:19;;148:2;143:3;139:12;132:19;;36:153;;;274:1;267:3;263:2;259:12;254:3;250:22;246:30;315:4;311:9;305:3;299:10;295:26;356:4;350:3;344:10;340:21;389:7;380;377:20;372:3;365:33;3:399;;;618:78:5;;;;;;;;;;;;;;;;;;;;;;;;;;14:1:-1;21;16:31;;;;75:4;69:11;64:16;;144:4;140:9;133:4;115:16;111:27;107:43;104:1;100:51;94:4;87:65;169:16;166:1;159:27;225:16;222:1;215:4;212:1;208:12;193:49;7:242;;16:31;36:4;31:9;;7:242;;604:92:5;;;;;540:164;;;:::o;265:77::-;327:7;318:6;;:16;;;;;;;;;;;;;;;;;;265:77;:::o;375:159::-;415:12;463:6;;;;;;;;;;;455:20;;480:6;488:37;;;;;;49:4:-1;39:7;30;26:21;22:32;13:7;6:49;488:37:5;;;;;;;38:4:-1;29:7;25:18;67:10;61:17;96:58;199:8;192:4;186;182:15;179:29;167:10;160:49;0:215;;;488:37:5;455:71;;;;;;;;;;;;;36:153:-1;66:2;61:3;58:11;36:153;;182:3;176:10;171:3;164:23;98:2;93:3;89:12;82:19;;123:2;118:3;114:12;107:19;;148:2;143:3;139:12;132:19;;36:153;;;274:1;267:3;263:2;259:12;254:3;250:22;246:30;315:4;311:9;305:3;299:10;295:26;356:4;350:3;344:10;340:21;389:7;380;377:20;372:3;365:33;3:399;;;455:71:5;;;;;;;;;;;;;;;;;;;;;;;;;14:1:-1;21;16:31;;;;75:4;69:11;64:16;;144:4;140:9;133:4;115:16;111:27;107:43;104:1;100:51;94:4;87:65;169:16;166:1;159:27;225:16;222:1;215:4;212:1;208:12;193:49;7:242;;16:31;36:4;31:9;;7:242;;441:85:5;;;;;375:159;:::o",
+  "source": "pragma solidity ^0.5.16;\r\nimport \"./GoBang.sol\";\r\ncontract Player {\r\n    GoBang gobang;\r\n    address playerAddress;\r\n    constructor (address _playerAddress, GoBang _gobang) public {\r\n        setGoBang(_gobang);\r\n        playerAddress = _playerAddress;\r\n    }\r\n    function setGoBang(GoBang _gobang) public {\r\n        gobang = _gobang;\r\n    }\r\n   \r\n\r\n    //wrapped call\r\n    function callWithdraw() public returns (bool success)  {\r\n        (success, ) = address(gobang).call.gas(200000)(abi.encodeWithSignature(\"withdraw()\"));\r\n    }\r\n    function join(uint fee) public returns (bool success){\r\n        (success, ) = address(gobang).call.value(fee).gas(200000)(abi.encodeWithSignature(\"join()\"));\r\n    }\r\n    //receive() external payable {}\r\n\r\n}",
+  "sourcePath": "E:\\masterstudy\\2022S1\\cycurrency\\research\\blockchain_game\\src\\contracts\\Player.sol",
+  "ast": {
+    "absolutePath": "project:/src/contracts/Player.sol",
+    "exportedSymbols": {
+      "Player": [
+        3036
+      ]
+    },
+    "id": 3037,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 2955,
+        "literals": [
+          "solidity",
+          "^",
+          "0.5",
+          ".16"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:24:5"
+      },
+      {
+        "absolutePath": "project:/src/contracts/GoBang.sol",
+        "file": "./GoBang.sol",
+        "id": 2956,
+        "nodeType": "ImportDirective",
+        "scope": 3037,
+        "sourceUnit": 2150,
+        "src": "26:22:5",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "documentation": null,
+        "fullyImplemented": true,
+        "id": 3036,
+        "linearizedBaseContracts": [
+          3036
+        ],
+        "name": "Player",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "constant": false,
+            "id": 2958,
+            "name": "gobang",
+            "nodeType": "VariableDeclaration",
+            "scope": 3036,
+            "src": "73:13:5",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_contract$_GoBang_$2149",
+              "typeString": "contract GoBang"
+            },
+            "typeName": {
+              "contractScope": null,
+              "id": 2957,
+              "name": "GoBang",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 2149,
+              "src": "73:6:5",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_GoBang_$2149",
+                "typeString": "contract GoBang"
+              }
+            },
+            "value": null,
+            "visibility": "internal"
+          },
+          {
+            "constant": false,
+            "id": 2960,
+            "name": "playerAddress",
+            "nodeType": "VariableDeclaration",
+            "scope": 3036,
+            "src": "93:21:5",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_address",
+              "typeString": "address"
+            },
+            "typeName": {
+              "id": 2959,
+              "name": "address",
+              "nodeType": "ElementaryTypeName",
+              "src": "93:7:5",
+              "stateMutability": "nonpayable",
+              "typeDescriptions": {
+                "typeIdentifier": "t_address",
+                "typeString": "address"
+              }
+            },
+            "value": null,
+            "visibility": "internal"
+          },
+          {
+            "body": {
+              "id": 2975,
+              "nodeType": "Block",
+              "src": "181:78:5",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "id": 2968,
+                        "name": "_gobang",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 2964,
+                        "src": "202:7:5",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_contract$_GoBang_$2149",
+                          "typeString": "contract GoBang"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_contract$_GoBang_$2149",
+                          "typeString": "contract GoBang"
+                        }
+                      ],
+                      "id": 2967,
+                      "name": "setGoBang",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 2986,
+                      "src": "192:9:5",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_internal_nonpayable$_t_contract$_GoBang_$2149_$returns$__$",
+                        "typeString": "function (contract GoBang)"
+                      }
+                    },
+                    "id": 2969,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "192:18:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 2970,
+                  "nodeType": "ExpressionStatement",
+                  "src": "192:18:5"
+                },
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 2973,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "id": 2971,
+                      "name": "playerAddress",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 2960,
+                      "src": "221:13:5",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_address",
+                        "typeString": "address"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "id": 2972,
+                      "name": "_playerAddress",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 2962,
+                      "src": "237:14:5",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_address",
+                        "typeString": "address"
+                      }
+                    },
+                    "src": "221:30:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "id": 2974,
+                  "nodeType": "ExpressionStatement",
+                  "src": "221:30:5"
+                }
+              ]
+            },
+            "documentation": null,
+            "id": 2976,
+            "implemented": true,
+            "kind": "constructor",
+            "modifiers": [],
+            "name": "",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2965,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2962,
+                  "name": "_playerAddress",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2976,
+                  "src": "134:22:5",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 2961,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "134:7:5",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 2964,
+                  "name": "_gobang",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2976,
+                  "src": "158:14:5",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_contract$_GoBang_$2149",
+                    "typeString": "contract GoBang"
+                  },
+                  "typeName": {
+                    "contractScope": null,
+                    "id": 2963,
+                    "name": "GoBang",
+                    "nodeType": "UserDefinedTypeName",
+                    "referencedDeclaration": 2149,
+                    "src": "158:6:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_contract$_GoBang_$2149",
+                      "typeString": "contract GoBang"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "133:40:5"
+            },
+            "returnParameters": {
+              "id": 2966,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "181:0:5"
+            },
+            "scope": 3036,
+            "src": "121:138:5",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 2985,
+              "nodeType": "Block",
+              "src": "307:35:5",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 2983,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "id": 2981,
+                      "name": "gobang",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 2958,
+                      "src": "318:6:5",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_contract$_GoBang_$2149",
+                        "typeString": "contract GoBang"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "id": 2982,
+                      "name": "_gobang",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 2978,
+                      "src": "327:7:5",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_contract$_GoBang_$2149",
+                        "typeString": "contract GoBang"
+                      }
+                    },
+                    "src": "318:16:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_contract$_GoBang_$2149",
+                      "typeString": "contract GoBang"
+                    }
+                  },
+                  "id": 2984,
+                  "nodeType": "ExpressionStatement",
+                  "src": "318:16:5"
+                }
+              ]
+            },
+            "documentation": null,
+            "id": 2986,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "setGoBang",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2979,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2978,
+                  "name": "_gobang",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2986,
+                  "src": "284:14:5",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_contract$_GoBang_$2149",
+                    "typeString": "contract GoBang"
+                  },
+                  "typeName": {
+                    "contractScope": null,
+                    "id": 2977,
+                    "name": "GoBang",
+                    "nodeType": "UserDefinedTypeName",
+                    "referencedDeclaration": 2149,
+                    "src": "284:6:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_contract$_GoBang_$2149",
+                      "typeString": "contract GoBang"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "283:16:5"
+            },
+            "returnParameters": {
+              "id": 2980,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "307:0:5"
+            },
+            "scope": 3036,
+            "src": "265:77:5",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 3007,
+              "nodeType": "Block",
+              "src": "430:104:5",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 3005,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "components": [
+                        {
+                          "argumentTypes": null,
+                          "id": 2991,
+                          "name": "success",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 2989,
+                          "src": "442:7:5",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_bool",
+                            "typeString": "bool"
+                          }
+                        },
+                        null
+                      ],
+                      "id": 2992,
+                      "isConstant": false,
+                      "isInlineArray": false,
+                      "isLValue": true,
+                      "isPure": false,
+                      "lValueRequested": true,
+                      "nodeType": "TupleExpression",
+                      "src": "441:11:5",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_tuple$_t_bool_$__$",
+                        "typeString": "tuple(bool,)"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "arguments": [
+                        {
+                          "argumentTypes": null,
+                          "arguments": [
+                            {
+                              "argumentTypes": null,
+                              "hexValue": "77697468647261772829",
+                              "id": 3002,
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": true,
+                              "kind": "string",
+                              "lValueRequested": false,
+                              "nodeType": "Literal",
+                              "src": "512:12:5",
+                              "subdenomination": null,
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_stringliteral_3ccfd60b2e3ddce51ab210bfb9db13577f03a21684fa35e4bcd739dd5a30bda2",
+                                "typeString": "literal_string \"withdraw()\""
+                              },
+                              "value": "withdraw()"
+                            }
+                          ],
+                          "expression": {
+                            "argumentTypes": [
+                              {
+                                "typeIdentifier": "t_stringliteral_3ccfd60b2e3ddce51ab210bfb9db13577f03a21684fa35e4bcd739dd5a30bda2",
+                                "typeString": "literal_string \"withdraw()\""
+                              }
+                            ],
+                            "expression": {
+                              "argumentTypes": null,
+                              "id": 3000,
+                              "name": "abi",
+                              "nodeType": "Identifier",
+                              "overloadedDeclarations": [],
+                              "referencedDeclaration": 3038,
+                              "src": "488:3:5",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_magic_abi",
+                                "typeString": "abi"
+                              }
+                            },
+                            "id": 3001,
+                            "isConstant": false,
+                            "isLValue": false,
+                            "isPure": true,
+                            "lValueRequested": false,
+                            "memberName": "encodeWithSignature",
+                            "nodeType": "MemberAccess",
+                            "referencedDeclaration": null,
+                            "src": "488:23:5",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_function_abiencodewithsignature_pure$_t_string_memory_ptr_$returns$_t_bytes_memory_ptr_$",
+                              "typeString": "function (string memory) pure returns (bytes memory)"
+                            }
+                          },
+                          "id": 3003,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": true,
+                          "kind": "functionCall",
+                          "lValueRequested": false,
+                          "names": [],
+                          "nodeType": "FunctionCall",
+                          "src": "488:37:5",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_bytes_memory_ptr",
+                            "typeString": "bytes memory"
+                          }
+                        }
+                      ],
+                      "expression": {
+                        "argumentTypes": [
+                          {
+                            "typeIdentifier": "t_bytes_memory_ptr",
+                            "typeString": "bytes memory"
+                          }
+                        ],
+                        "arguments": [
+                          {
+                            "argumentTypes": null,
+                            "hexValue": "323030303030",
+                            "id": 2998,
+                            "isConstant": false,
+                            "isLValue": false,
+                            "isPure": true,
+                            "kind": "number",
+                            "lValueRequested": false,
+                            "nodeType": "Literal",
+                            "src": "480:6:5",
+                            "subdenomination": null,
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_rational_200000_by_1",
+                              "typeString": "int_const 200000"
+                            },
+                            "value": "200000"
+                          }
+                        ],
+                        "expression": {
+                          "argumentTypes": [
+                            {
+                              "typeIdentifier": "t_rational_200000_by_1",
+                              "typeString": "int_const 200000"
+                            }
+                          ],
+                          "expression": {
+                            "argumentTypes": null,
+                            "expression": {
+                              "argumentTypes": null,
+                              "arguments": [
+                                {
+                                  "argumentTypes": null,
+                                  "id": 2994,
+                                  "name": "gobang",
+                                  "nodeType": "Identifier",
+                                  "overloadedDeclarations": [],
+                                  "referencedDeclaration": 2958,
+                                  "src": "463:6:5",
+                                  "typeDescriptions": {
+                                    "typeIdentifier": "t_contract$_GoBang_$2149",
+                                    "typeString": "contract GoBang"
+                                  }
+                                }
+                              ],
+                              "expression": {
+                                "argumentTypes": [
+                                  {
+                                    "typeIdentifier": "t_contract$_GoBang_$2149",
+                                    "typeString": "contract GoBang"
+                                  }
+                                ],
+                                "id": 2993,
+                                "isConstant": false,
+                                "isLValue": false,
+                                "isPure": true,
+                                "lValueRequested": false,
+                                "nodeType": "ElementaryTypeNameExpression",
+                                "src": "455:7:5",
+                                "typeDescriptions": {
+                                  "typeIdentifier": "t_type$_t_address_$",
+                                  "typeString": "type(address)"
+                                },
+                                "typeName": "address"
+                              },
+                              "id": 2995,
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": false,
+                              "kind": "typeConversion",
+                              "lValueRequested": false,
+                              "names": [],
+                              "nodeType": "FunctionCall",
+                              "src": "455:15:5",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_address",
+                                "typeString": "address"
+                              }
+                            },
+                            "id": 2996,
+                            "isConstant": false,
+                            "isLValue": false,
+                            "isPure": false,
+                            "lValueRequested": false,
+                            "memberName": "call",
+                            "nodeType": "MemberAccess",
+                            "referencedDeclaration": null,
+                            "src": "455:20:5",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_function_barecall_payable$_t_bytes_memory_ptr_$returns$_t_bool_$_t_bytes_memory_ptr_$",
+                              "typeString": "function (bytes memory) payable returns (bool,bytes memory)"
+                            }
+                          },
+                          "id": 2997,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "memberName": "gas",
+                          "nodeType": "MemberAccess",
+                          "referencedDeclaration": null,
+                          "src": "455:24:5",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_function_setgas_pure$_t_uint256_$returns$_t_function_barecall_payable$_t_bytes_memory_ptr_$returns$_t_bool_$_t_bytes_memory_ptr_$gas_$",
+                            "typeString": "function (uint256) pure returns (function (bytes memory) payable returns (bool,bytes memory))"
+                          }
+                        },
+                        "id": 2999,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "kind": "functionCall",
+                        "lValueRequested": false,
+                        "names": [],
+                        "nodeType": "FunctionCall",
+                        "src": "455:32:5",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_function_barecall_payable$_t_bytes_memory_ptr_$returns$_t_bool_$_t_bytes_memory_ptr_$gas",
+                          "typeString": "function (bytes memory) payable returns (bool,bytes memory)"
+                        }
+                      },
+                      "id": 3004,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "kind": "functionCall",
+                      "lValueRequested": false,
+                      "names": [],
+                      "nodeType": "FunctionCall",
+                      "src": "455:71:5",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_tuple$_t_bool_$_t_bytes_memory_ptr_$",
+                        "typeString": "tuple(bool,bytes memory)"
+                      }
+                    },
+                    "src": "441:85:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 3006,
+                  "nodeType": "ExpressionStatement",
+                  "src": "441:85:5"
+                }
+              ]
+            },
+            "documentation": null,
+            "id": 3008,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "callWithdraw",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2987,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "396:2:5"
+            },
+            "returnParameters": {
+              "id": 2990,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2989,
+                  "name": "success",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3008,
+                  "src": "415:12:5",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  },
+                  "typeName": {
+                    "id": 2988,
+                    "name": "bool",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "415:4:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "414:14:5"
+            },
+            "scope": 3036,
+            "src": "375:159:5",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 3034,
+              "nodeType": "Block",
+              "src": "593:111:5",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 3032,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "components": [
+                        {
+                          "argumentTypes": null,
+                          "id": 3015,
+                          "name": "success",
+                          "nodeType": "Identifier",
+                          "overloadedDeclarations": [],
+                          "referencedDeclaration": 3013,
+                          "src": "605:7:5",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_bool",
+                            "typeString": "bool"
+                          }
+                        },
+                        null
+                      ],
+                      "id": 3016,
+                      "isConstant": false,
+                      "isInlineArray": false,
+                      "isLValue": true,
+                      "isPure": false,
+                      "lValueRequested": true,
+                      "nodeType": "TupleExpression",
+                      "src": "604:11:5",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_tuple$_t_bool_$__$",
+                        "typeString": "tuple(bool,)"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "arguments": [
+                        {
+                          "argumentTypes": null,
+                          "arguments": [
+                            {
+                              "argumentTypes": null,
+                              "hexValue": "6a6f696e2829",
+                              "id": 3029,
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": true,
+                              "kind": "string",
+                              "lValueRequested": false,
+                              "nodeType": "Literal",
+                              "src": "686:8:5",
+                              "subdenomination": null,
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_stringliteral_b688a363d90314aa28962431094bdeae43b86d0bcf9e1cc4fa2adc1d160e5ef7",
+                                "typeString": "literal_string \"join()\""
+                              },
+                              "value": "join()"
+                            }
+                          ],
+                          "expression": {
+                            "argumentTypes": [
+                              {
+                                "typeIdentifier": "t_stringliteral_b688a363d90314aa28962431094bdeae43b86d0bcf9e1cc4fa2adc1d160e5ef7",
+                                "typeString": "literal_string \"join()\""
+                              }
+                            ],
+                            "expression": {
+                              "argumentTypes": null,
+                              "id": 3027,
+                              "name": "abi",
+                              "nodeType": "Identifier",
+                              "overloadedDeclarations": [],
+                              "referencedDeclaration": 3038,
+                              "src": "662:3:5",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_magic_abi",
+                                "typeString": "abi"
+                              }
+                            },
+                            "id": 3028,
+                            "isConstant": false,
+                            "isLValue": false,
+                            "isPure": true,
+                            "lValueRequested": false,
+                            "memberName": "encodeWithSignature",
+                            "nodeType": "MemberAccess",
+                            "referencedDeclaration": null,
+                            "src": "662:23:5",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_function_abiencodewithsignature_pure$_t_string_memory_ptr_$returns$_t_bytes_memory_ptr_$",
+                              "typeString": "function (string memory) pure returns (bytes memory)"
+                            }
+                          },
+                          "id": 3030,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": true,
+                          "kind": "functionCall",
+                          "lValueRequested": false,
+                          "names": [],
+                          "nodeType": "FunctionCall",
+                          "src": "662:33:5",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_bytes_memory_ptr",
+                            "typeString": "bytes memory"
+                          }
+                        }
+                      ],
+                      "expression": {
+                        "argumentTypes": [
+                          {
+                            "typeIdentifier": "t_bytes_memory_ptr",
+                            "typeString": "bytes memory"
+                          }
+                        ],
+                        "arguments": [
+                          {
+                            "argumentTypes": null,
+                            "hexValue": "323030303030",
+                            "id": 3025,
+                            "isConstant": false,
+                            "isLValue": false,
+                            "isPure": true,
+                            "kind": "number",
+                            "lValueRequested": false,
+                            "nodeType": "Literal",
+                            "src": "654:6:5",
+                            "subdenomination": null,
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_rational_200000_by_1",
+                              "typeString": "int_const 200000"
+                            },
+                            "value": "200000"
+                          }
+                        ],
+                        "expression": {
+                          "argumentTypes": [
+                            {
+                              "typeIdentifier": "t_rational_200000_by_1",
+                              "typeString": "int_const 200000"
+                            }
+                          ],
+                          "expression": {
+                            "argumentTypes": null,
+                            "arguments": [
+                              {
+                                "argumentTypes": null,
+                                "id": 3022,
+                                "name": "fee",
+                                "nodeType": "Identifier",
+                                "overloadedDeclarations": [],
+                                "referencedDeclaration": 3010,
+                                "src": "645:3:5",
+                                "typeDescriptions": {
+                                  "typeIdentifier": "t_uint256",
+                                  "typeString": "uint256"
+                                }
+                              }
+                            ],
+                            "expression": {
+                              "argumentTypes": [
+                                {
+                                  "typeIdentifier": "t_uint256",
+                                  "typeString": "uint256"
+                                }
+                              ],
+                              "expression": {
+                                "argumentTypes": null,
+                                "expression": {
+                                  "argumentTypes": null,
+                                  "arguments": [
+                                    {
+                                      "argumentTypes": null,
+                                      "id": 3018,
+                                      "name": "gobang",
+                                      "nodeType": "Identifier",
+                                      "overloadedDeclarations": [],
+                                      "referencedDeclaration": 2958,
+                                      "src": "626:6:5",
+                                      "typeDescriptions": {
+                                        "typeIdentifier": "t_contract$_GoBang_$2149",
+                                        "typeString": "contract GoBang"
+                                      }
+                                    }
+                                  ],
+                                  "expression": {
+                                    "argumentTypes": [
+                                      {
+                                        "typeIdentifier": "t_contract$_GoBang_$2149",
+                                        "typeString": "contract GoBang"
+                                      }
+                                    ],
+                                    "id": 3017,
+                                    "isConstant": false,
+                                    "isLValue": false,
+                                    "isPure": true,
+                                    "lValueRequested": false,
+                                    "nodeType": "ElementaryTypeNameExpression",
+                                    "src": "618:7:5",
+                                    "typeDescriptions": {
+                                      "typeIdentifier": "t_type$_t_address_$",
+                                      "typeString": "type(address)"
+                                    },
+                                    "typeName": "address"
+                                  },
+                                  "id": 3019,
+                                  "isConstant": false,
+                                  "isLValue": false,
+                                  "isPure": false,
+                                  "kind": "typeConversion",
+                                  "lValueRequested": false,
+                                  "names": [],
+                                  "nodeType": "FunctionCall",
+                                  "src": "618:15:5",
+                                  "typeDescriptions": {
+                                    "typeIdentifier": "t_address",
+                                    "typeString": "address"
+                                  }
+                                },
+                                "id": 3020,
+                                "isConstant": false,
+                                "isLValue": false,
+                                "isPure": false,
+                                "lValueRequested": false,
+                                "memberName": "call",
+                                "nodeType": "MemberAccess",
+                                "referencedDeclaration": null,
+                                "src": "618:20:5",
+                                "typeDescriptions": {
+                                  "typeIdentifier": "t_function_barecall_payable$_t_bytes_memory_ptr_$returns$_t_bool_$_t_bytes_memory_ptr_$",
+                                  "typeString": "function (bytes memory) payable returns (bool,bytes memory)"
+                                }
+                              },
+                              "id": 3021,
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": false,
+                              "lValueRequested": false,
+                              "memberName": "value",
+                              "nodeType": "MemberAccess",
+                              "referencedDeclaration": null,
+                              "src": "618:26:5",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_function_setvalue_pure$_t_uint256_$returns$_t_function_barecall_payable$_t_bytes_memory_ptr_$returns$_t_bool_$_t_bytes_memory_ptr_$value_$",
+                                "typeString": "function (uint256) pure returns (function (bytes memory) payable returns (bool,bytes memory))"
+                              }
+                            },
+                            "id": 3023,
+                            "isConstant": false,
+                            "isLValue": false,
+                            "isPure": false,
+                            "kind": "functionCall",
+                            "lValueRequested": false,
+                            "names": [],
+                            "nodeType": "FunctionCall",
+                            "src": "618:31:5",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_function_barecall_payable$_t_bytes_memory_ptr_$returns$_t_bool_$_t_bytes_memory_ptr_$value",
+                              "typeString": "function (bytes memory) payable returns (bool,bytes memory)"
+                            }
+                          },
+                          "id": 3024,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "memberName": "gas",
+                          "nodeType": "MemberAccess",
+                          "referencedDeclaration": null,
+                          "src": "618:35:5",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_function_setgas_pure$_t_uint256_$returns$_t_function_barecall_payable$_t_bytes_memory_ptr_$returns$_t_bool_$_t_bytes_memory_ptr_$gasvalue_$value",
+                            "typeString": "function (uint256) pure returns (function (bytes memory) payable returns (bool,bytes memory))"
+                          }
+                        },
+                        "id": 3026,
+                        "isConstant": false,
+                        "isLValue": false,
+                        "isPure": false,
+                        "kind": "functionCall",
+                        "lValueRequested": false,
+                        "names": [],
+                        "nodeType": "FunctionCall",
+                        "src": "618:43:5",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_function_barecall_payable$_t_bytes_memory_ptr_$returns$_t_bool_$_t_bytes_memory_ptr_$gasvalue",
+                          "typeString": "function (bytes memory) payable returns (bool,bytes memory)"
+                        }
+                      },
+                      "id": 3031,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "kind": "functionCall",
+                      "lValueRequested": false,
+                      "names": [],
+                      "nodeType": "FunctionCall",
+                      "src": "618:78:5",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_tuple$_t_bool_$_t_bytes_memory_ptr_$",
+                        "typeString": "tuple(bool,bytes memory)"
+                      }
+                    },
+                    "src": "604:92:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 3033,
+                  "nodeType": "ExpressionStatement",
+                  "src": "604:92:5"
+                }
+              ]
+            },
+            "documentation": null,
+            "id": 3035,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "join",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 3011,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 3010,
+                  "name": "fee",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3035,
+                  "src": "554:8:5",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 3009,
+                    "name": "uint",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "554:4:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "553:10:5"
+            },
+            "returnParameters": {
+              "id": 3014,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 3013,
+                  "name": "success",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3035,
+                  "src": "580:12:5",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  },
+                  "typeName": {
+                    "id": 3012,
+                    "name": "bool",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "580:4:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "579:14:5"
+            },
+            "scope": 3036,
+            "src": "540:164:5",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "public"
+          }
+        ],
+        "scope": 3037,
+        "src": "50:696:5"
+      }
+    ],
+    "src": "0:746:5"
+  },
+  "legacyAST": {
+    "attributes": {
+      "absolutePath": "project:/src/contracts/Player.sol",
+      "exportedSymbols": {
+        "Player": [
+          3036
+        ]
+      }
+    },
+    "children": [
+      {
+        "attributes": {
+          "literals": [
+            "solidity",
+            "^",
+            "0.5",
+            ".16"
+          ]
+        },
+        "id": 2955,
+        "name": "PragmaDirective",
+        "src": "0:24:5"
+      },
+      {
+        "attributes": {
+          "SourceUnit": 2150,
+          "absolutePath": "project:/src/contracts/GoBang.sol",
+          "file": "./GoBang.sol",
+          "scope": 3037,
+          "symbolAliases": [
+            null
+          ],
+          "unitAlias": ""
+        },
+        "id": 2956,
+        "name": "ImportDirective",
+        "src": "26:22:5"
+      },
+      {
+        "attributes": {
+          "baseContracts": [
+            null
+          ],
+          "contractDependencies": [
+            null
+          ],
+          "contractKind": "contract",
+          "documentation": null,
+          "fullyImplemented": true,
+          "linearizedBaseContracts": [
+            3036
+          ],
+          "name": "Player",
+          "scope": 3037
+        },
+        "children": [
+          {
+            "attributes": {
+              "constant": false,
+              "name": "gobang",
+              "scope": 3036,
+              "stateVariable": true,
+              "storageLocation": "default",
+              "type": "contract GoBang",
+              "value": null,
+              "visibility": "internal"
+            },
+            "children": [
+              {
+                "attributes": {
+                  "contractScope": null,
+                  "name": "GoBang",
+                  "referencedDeclaration": 2149,
+                  "type": "contract GoBang"
+                },
+                "id": 2957,
+                "name": "UserDefinedTypeName",
+                "src": "73:6:5"
+              }
+            ],
+            "id": 2958,
+            "name": "VariableDeclaration",
+            "src": "73:13:5"
+          },
+          {
+            "attributes": {
+              "constant": false,
+              "name": "playerAddress",
+              "scope": 3036,
+              "stateVariable": true,
+              "storageLocation": "default",
+              "type": "address",
+              "value": null,
+              "visibility": "internal"
+            },
+            "children": [
+              {
+                "attributes": {
+                  "name": "address",
+                  "stateMutability": "nonpayable",
+                  "type": "address"
+                },
+                "id": 2959,
+                "name": "ElementaryTypeName",
+                "src": "93:7:5"
+              }
+            ],
+            "id": 2960,
+            "name": "VariableDeclaration",
+            "src": "93:21:5"
+          },
+          {
+            "attributes": {
+              "documentation": null,
+              "implemented": true,
+              "isConstructor": true,
+              "kind": "constructor",
+              "modifiers": [
+                null
+              ],
+              "name": "",
+              "scope": 3036,
+              "stateMutability": "nonpayable",
+              "superFunction": null,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_playerAddress",
+                      "scope": 2976,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "stateMutability": "nonpayable",
+                          "type": "address"
+                        },
+                        "id": 2961,
+                        "name": "ElementaryTypeName",
+                        "src": "134:7:5"
+                      }
+                    ],
+                    "id": 2962,
+                    "name": "VariableDeclaration",
+                    "src": "134:22:5"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_gobang",
+                      "scope": 2976,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "contract GoBang",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "contractScope": null,
+                          "name": "GoBang",
+                          "referencedDeclaration": 2149,
+                          "type": "contract GoBang"
+                        },
+                        "id": 2963,
+                        "name": "UserDefinedTypeName",
+                        "src": "158:6:5"
+                      }
+                    ],
+                    "id": 2964,
+                    "name": "VariableDeclaration",
+                    "src": "158:14:5"
+                  }
+                ],
+                "id": 2965,
+                "name": "ParameterList",
+                "src": "133:40:5"
+              },
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 2966,
+                "name": "ParameterList",
+                "src": "181:0:5"
+              },
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "isStructConstructorCall": false,
+                          "lValueRequested": false,
+                          "names": [
+                            null
+                          ],
+                          "type": "tuple()",
+                          "type_conversion": false
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": [
+                                {
+                                  "typeIdentifier": "t_contract$_GoBang_$2149",
+                                  "typeString": "contract GoBang"
+                                }
+                              ],
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 2986,
+                              "type": "function (contract GoBang)",
+                              "value": "setGoBang"
+                            },
+                            "id": 2967,
+                            "name": "Identifier",
+                            "src": "192:9:5"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 2964,
+                              "type": "contract GoBang",
+                              "value": "_gobang"
+                            },
+                            "id": 2968,
+                            "name": "Identifier",
+                            "src": "202:7:5"
+                          }
+                        ],
+                        "id": 2969,
+                        "name": "FunctionCall",
+                        "src": "192:18:5"
+                      }
+                    ],
+                    "id": 2970,
+                    "name": "ExpressionStatement",
+                    "src": "192:18:5"
+                  },
+                  {
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "operator": "=",
+                          "type": "address"
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 2960,
+                              "type": "address",
+                              "value": "playerAddress"
+                            },
+                            "id": 2971,
+                            "name": "Identifier",
+                            "src": "221:13:5"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 2962,
+                              "type": "address",
+                              "value": "_playerAddress"
+                            },
+                            "id": 2972,
+                            "name": "Identifier",
+                            "src": "237:14:5"
+                          }
+                        ],
+                        "id": 2973,
+                        "name": "Assignment",
+                        "src": "221:30:5"
+                      }
+                    ],
+                    "id": 2974,
+                    "name": "ExpressionStatement",
+                    "src": "221:30:5"
+                  }
+                ],
+                "id": 2975,
+                "name": "Block",
+                "src": "181:78:5"
+              }
+            ],
+            "id": 2976,
+            "name": "FunctionDefinition",
+            "src": "121:138:5"
+          },
+          {
+            "attributes": {
+              "documentation": null,
+              "implemented": true,
+              "isConstructor": false,
+              "kind": "function",
+              "modifiers": [
+                null
+              ],
+              "name": "setGoBang",
+              "scope": 3036,
+              "stateMutability": "nonpayable",
+              "superFunction": null,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_gobang",
+                      "scope": 2986,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "contract GoBang",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "contractScope": null,
+                          "name": "GoBang",
+                          "referencedDeclaration": 2149,
+                          "type": "contract GoBang"
+                        },
+                        "id": 2977,
+                        "name": "UserDefinedTypeName",
+                        "src": "284:6:5"
+                      }
+                    ],
+                    "id": 2978,
+                    "name": "VariableDeclaration",
+                    "src": "284:14:5"
+                  }
+                ],
+                "id": 2979,
+                "name": "ParameterList",
+                "src": "283:16:5"
+              },
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 2980,
+                "name": "ParameterList",
+                "src": "307:0:5"
+              },
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "operator": "=",
+                          "type": "contract GoBang"
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 2958,
+                              "type": "contract GoBang",
+                              "value": "gobang"
+                            },
+                            "id": 2981,
+                            "name": "Identifier",
+                            "src": "318:6:5"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 2978,
+                              "type": "contract GoBang",
+                              "value": "_gobang"
+                            },
+                            "id": 2982,
+                            "name": "Identifier",
+                            "src": "327:7:5"
+                          }
+                        ],
+                        "id": 2983,
+                        "name": "Assignment",
+                        "src": "318:16:5"
+                      }
+                    ],
+                    "id": 2984,
+                    "name": "ExpressionStatement",
+                    "src": "318:16:5"
+                  }
+                ],
+                "id": 2985,
+                "name": "Block",
+                "src": "307:35:5"
+              }
+            ],
+            "id": 2986,
+            "name": "FunctionDefinition",
+            "src": "265:77:5"
+          },
+          {
+            "attributes": {
+              "documentation": null,
+              "implemented": true,
+              "isConstructor": false,
+              "kind": "function",
+              "modifiers": [
+                null
+              ],
+              "name": "callWithdraw",
+              "scope": 3036,
+              "stateMutability": "nonpayable",
+              "superFunction": null,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 2987,
+                "name": "ParameterList",
+                "src": "396:2:5"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "success",
+                      "scope": 3008,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "bool",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "bool",
+                          "type": "bool"
+                        },
+                        "id": 2988,
+                        "name": "ElementaryTypeName",
+                        "src": "415:4:5"
+                      }
+                    ],
+                    "id": 2989,
+                    "name": "VariableDeclaration",
+                    "src": "415:12:5"
+                  }
+                ],
+                "id": 2990,
+                "name": "ParameterList",
+                "src": "414:14:5"
+              },
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "operator": "=",
+                          "type": "tuple()"
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "isConstant": false,
+                              "isInlineArray": false,
+                              "isLValue": true,
+                              "isPure": false,
+                              "lValueRequested": true,
+                              "type": "tuple(bool,)"
+                            },
+                            "children": [
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "overloadedDeclarations": [
+                                    null
+                                  ],
+                                  "referencedDeclaration": 2989,
+                                  "type": "bool",
+                                  "value": "success"
+                                },
+                                "id": 2991,
+                                "name": "Identifier",
+                                "src": "442:7:5"
+                              }
+                            ],
+                            "id": 2992,
+                            "name": "TupleExpression",
+                            "src": "441:11:5"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": false,
+                              "isStructConstructorCall": false,
+                              "lValueRequested": false,
+                              "names": [
+                                null
+                              ],
+                              "type": "tuple(bool,bytes memory)",
+                              "type_conversion": false
+                            },
+                            "children": [
+                              {
+                                "attributes": {
+                                  "argumentTypes": [
+                                    {
+                                      "typeIdentifier": "t_bytes_memory_ptr",
+                                      "typeString": "bytes memory"
+                                    }
+                                  ],
+                                  "isConstant": false,
+                                  "isLValue": false,
+                                  "isPure": false,
+                                  "isStructConstructorCall": false,
+                                  "lValueRequested": false,
+                                  "names": [
+                                    null
+                                  ],
+                                  "type": "function (bytes memory) payable returns (bool,bytes memory)",
+                                  "type_conversion": false
+                                },
+                                "children": [
+                                  {
+                                    "attributes": {
+                                      "argumentTypes": [
+                                        {
+                                          "typeIdentifier": "t_rational_200000_by_1",
+                                          "typeString": "int_const 200000"
+                                        }
+                                      ],
+                                      "isConstant": false,
+                                      "isLValue": false,
+                                      "isPure": false,
+                                      "lValueRequested": false,
+                                      "member_name": "gas",
+                                      "referencedDeclaration": null,
+                                      "type": "function (uint256) pure returns (function (bytes memory) payable returns (bool,bytes memory))"
+                                    },
+                                    "children": [
+                                      {
+                                        "attributes": {
+                                          "argumentTypes": null,
+                                          "isConstant": false,
+                                          "isLValue": false,
+                                          "isPure": false,
+                                          "lValueRequested": false,
+                                          "member_name": "call",
+                                          "referencedDeclaration": null,
+                                          "type": "function (bytes memory) payable returns (bool,bytes memory)"
+                                        },
+                                        "children": [
+                                          {
+                                            "attributes": {
+                                              "argumentTypes": null,
+                                              "isConstant": false,
+                                              "isLValue": false,
+                                              "isPure": false,
+                                              "isStructConstructorCall": false,
+                                              "lValueRequested": false,
+                                              "names": [
+                                                null
+                                              ],
+                                              "type": "address",
+                                              "type_conversion": true
+                                            },
+                                            "children": [
+                                              {
+                                                "attributes": {
+                                                  "argumentTypes": [
+                                                    {
+                                                      "typeIdentifier": "t_contract$_GoBang_$2149",
+                                                      "typeString": "contract GoBang"
+                                                    }
+                                                  ],
+                                                  "isConstant": false,
+                                                  "isLValue": false,
+                                                  "isPure": true,
+                                                  "lValueRequested": false,
+                                                  "type": "type(address)",
+                                                  "value": "address"
+                                                },
+                                                "id": 2993,
+                                                "name": "ElementaryTypeNameExpression",
+                                                "src": "455:7:5"
+                                              },
+                                              {
+                                                "attributes": {
+                                                  "argumentTypes": null,
+                                                  "overloadedDeclarations": [
+                                                    null
+                                                  ],
+                                                  "referencedDeclaration": 2958,
+                                                  "type": "contract GoBang",
+                                                  "value": "gobang"
+                                                },
+                                                "id": 2994,
+                                                "name": "Identifier",
+                                                "src": "463:6:5"
+                                              }
+                                            ],
+                                            "id": 2995,
+                                            "name": "FunctionCall",
+                                            "src": "455:15:5"
+                                          }
+                                        ],
+                                        "id": 2996,
+                                        "name": "MemberAccess",
+                                        "src": "455:20:5"
+                                      }
+                                    ],
+                                    "id": 2997,
+                                    "name": "MemberAccess",
+                                    "src": "455:24:5"
+                                  },
+                                  {
+                                    "attributes": {
+                                      "argumentTypes": null,
+                                      "hexvalue": "323030303030",
+                                      "isConstant": false,
+                                      "isLValue": false,
+                                      "isPure": true,
+                                      "lValueRequested": false,
+                                      "subdenomination": null,
+                                      "token": "number",
+                                      "type": "int_const 200000",
+                                      "value": "200000"
+                                    },
+                                    "id": 2998,
+                                    "name": "Literal",
+                                    "src": "480:6:5"
+                                  }
+                                ],
+                                "id": 2999,
+                                "name": "FunctionCall",
+                                "src": "455:32:5"
+                              },
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "isConstant": false,
+                                  "isLValue": false,
+                                  "isPure": true,
+                                  "isStructConstructorCall": false,
+                                  "lValueRequested": false,
+                                  "names": [
+                                    null
+                                  ],
+                                  "type": "bytes memory",
+                                  "type_conversion": false
+                                },
+                                "children": [
+                                  {
+                                    "attributes": {
+                                      "argumentTypes": [
+                                        {
+                                          "typeIdentifier": "t_stringliteral_3ccfd60b2e3ddce51ab210bfb9db13577f03a21684fa35e4bcd739dd5a30bda2",
+                                          "typeString": "literal_string \"withdraw()\""
+                                        }
+                                      ],
+                                      "isConstant": false,
+                                      "isLValue": false,
+                                      "isPure": true,
+                                      "lValueRequested": false,
+                                      "member_name": "encodeWithSignature",
+                                      "referencedDeclaration": null,
+                                      "type": "function (string memory) pure returns (bytes memory)"
+                                    },
+                                    "children": [
+                                      {
+                                        "attributes": {
+                                          "argumentTypes": null,
+                                          "overloadedDeclarations": [
+                                            null
+                                          ],
+                                          "referencedDeclaration": 3038,
+                                          "type": "abi",
+                                          "value": "abi"
+                                        },
+                                        "id": 3000,
+                                        "name": "Identifier",
+                                        "src": "488:3:5"
+                                      }
+                                    ],
+                                    "id": 3001,
+                                    "name": "MemberAccess",
+                                    "src": "488:23:5"
+                                  },
+                                  {
+                                    "attributes": {
+                                      "argumentTypes": null,
+                                      "hexvalue": "77697468647261772829",
+                                      "isConstant": false,
+                                      "isLValue": false,
+                                      "isPure": true,
+                                      "lValueRequested": false,
+                                      "subdenomination": null,
+                                      "token": "string",
+                                      "type": "literal_string \"withdraw()\"",
+                                      "value": "withdraw()"
+                                    },
+                                    "id": 3002,
+                                    "name": "Literal",
+                                    "src": "512:12:5"
+                                  }
+                                ],
+                                "id": 3003,
+                                "name": "FunctionCall",
+                                "src": "488:37:5"
+                              }
+                            ],
+                            "id": 3004,
+                            "name": "FunctionCall",
+                            "src": "455:71:5"
+                          }
+                        ],
+                        "id": 3005,
+                        "name": "Assignment",
+                        "src": "441:85:5"
+                      }
+                    ],
+                    "id": 3006,
+                    "name": "ExpressionStatement",
+                    "src": "441:85:5"
+                  }
+                ],
+                "id": 3007,
+                "name": "Block",
+                "src": "430:104:5"
+              }
+            ],
+            "id": 3008,
+            "name": "FunctionDefinition",
+            "src": "375:159:5"
+          },
+          {
+            "attributes": {
+              "documentation": null,
+              "implemented": true,
+              "isConstructor": false,
+              "kind": "function",
+              "modifiers": [
+                null
+              ],
+              "name": "join",
+              "scope": 3036,
+              "stateMutability": "nonpayable",
+              "superFunction": null,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "fee",
+                      "scope": 3035,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "uint",
+                          "type": "uint256"
+                        },
+                        "id": 3009,
+                        "name": "ElementaryTypeName",
+                        "src": "554:4:5"
+                      }
+                    ],
+                    "id": 3010,
+                    "name": "VariableDeclaration",
+                    "src": "554:8:5"
+                  }
+                ],
+                "id": 3011,
+                "name": "ParameterList",
+                "src": "553:10:5"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "success",
+                      "scope": 3035,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "bool",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "bool",
+                          "type": "bool"
+                        },
+                        "id": 3012,
+                        "name": "ElementaryTypeName",
+                        "src": "580:4:5"
+                      }
+                    ],
+                    "id": 3013,
+                    "name": "VariableDeclaration",
+                    "src": "580:12:5"
+                  }
+                ],
+                "id": 3014,
+                "name": "ParameterList",
+                "src": "579:14:5"
+              },
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "operator": "=",
+                          "type": "tuple()"
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "isConstant": false,
+                              "isInlineArray": false,
+                              "isLValue": true,
+                              "isPure": false,
+                              "lValueRequested": true,
+                              "type": "tuple(bool,)"
+                            },
+                            "children": [
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "overloadedDeclarations": [
+                                    null
+                                  ],
+                                  "referencedDeclaration": 3013,
+                                  "type": "bool",
+                                  "value": "success"
+                                },
+                                "id": 3015,
+                                "name": "Identifier",
+                                "src": "605:7:5"
+                              }
+                            ],
+                            "id": 3016,
+                            "name": "TupleExpression",
+                            "src": "604:11:5"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": false,
+                              "isStructConstructorCall": false,
+                              "lValueRequested": false,
+                              "names": [
+                                null
+                              ],
+                              "type": "tuple(bool,bytes memory)",
+                              "type_conversion": false
+                            },
+                            "children": [
+                              {
+                                "attributes": {
+                                  "argumentTypes": [
+                                    {
+                                      "typeIdentifier": "t_bytes_memory_ptr",
+                                      "typeString": "bytes memory"
+                                    }
+                                  ],
+                                  "isConstant": false,
+                                  "isLValue": false,
+                                  "isPure": false,
+                                  "isStructConstructorCall": false,
+                                  "lValueRequested": false,
+                                  "names": [
+                                    null
+                                  ],
+                                  "type": "function (bytes memory) payable returns (bool,bytes memory)",
+                                  "type_conversion": false
+                                },
+                                "children": [
+                                  {
+                                    "attributes": {
+                                      "argumentTypes": [
+                                        {
+                                          "typeIdentifier": "t_rational_200000_by_1",
+                                          "typeString": "int_const 200000"
+                                        }
+                                      ],
+                                      "isConstant": false,
+                                      "isLValue": false,
+                                      "isPure": false,
+                                      "lValueRequested": false,
+                                      "member_name": "gas",
+                                      "referencedDeclaration": null,
+                                      "type": "function (uint256) pure returns (function (bytes memory) payable returns (bool,bytes memory))"
+                                    },
+                                    "children": [
+                                      {
+                                        "attributes": {
+                                          "argumentTypes": null,
+                                          "isConstant": false,
+                                          "isLValue": false,
+                                          "isPure": false,
+                                          "isStructConstructorCall": false,
+                                          "lValueRequested": false,
+                                          "names": [
+                                            null
+                                          ],
+                                          "type": "function (bytes memory) payable returns (bool,bytes memory)",
+                                          "type_conversion": false
+                                        },
+                                        "children": [
+                                          {
+                                            "attributes": {
+                                              "argumentTypes": [
+                                                {
+                                                  "typeIdentifier": "t_uint256",
+                                                  "typeString": "uint256"
+                                                }
+                                              ],
+                                              "isConstant": false,
+                                              "isLValue": false,
+                                              "isPure": false,
+                                              "lValueRequested": false,
+                                              "member_name": "value",
+                                              "referencedDeclaration": null,
+                                              "type": "function (uint256) pure returns (function (bytes memory) payable returns (bool,bytes memory))"
+                                            },
+                                            "children": [
+                                              {
+                                                "attributes": {
+                                                  "argumentTypes": null,
+                                                  "isConstant": false,
+                                                  "isLValue": false,
+                                                  "isPure": false,
+                                                  "lValueRequested": false,
+                                                  "member_name": "call",
+                                                  "referencedDeclaration": null,
+                                                  "type": "function (bytes memory) payable returns (bool,bytes memory)"
+                                                },
+                                                "children": [
+                                                  {
+                                                    "attributes": {
+                                                      "argumentTypes": null,
+                                                      "isConstant": false,
+                                                      "isLValue": false,
+                                                      "isPure": false,
+                                                      "isStructConstructorCall": false,
+                                                      "lValueRequested": false,
+                                                      "names": [
+                                                        null
+                                                      ],
+                                                      "type": "address",
+                                                      "type_conversion": true
+                                                    },
+                                                    "children": [
+                                                      {
+                                                        "attributes": {
+                                                          "argumentTypes": [
+                                                            {
+                                                              "typeIdentifier": "t_contract$_GoBang_$2149",
+                                                              "typeString": "contract GoBang"
+                                                            }
+                                                          ],
+                                                          "isConstant": false,
+                                                          "isLValue": false,
+                                                          "isPure": true,
+                                                          "lValueRequested": false,
+                                                          "type": "type(address)",
+                                                          "value": "address"
+                                                        },
+                                                        "id": 3017,
+                                                        "name": "ElementaryTypeNameExpression",
+                                                        "src": "618:7:5"
+                                                      },
+                                                      {
+                                                        "attributes": {
+                                                          "argumentTypes": null,
+                                                          "overloadedDeclarations": [
+                                                            null
+                                                          ],
+                                                          "referencedDeclaration": 2958,
+                                                          "type": "contract GoBang",
+                                                          "value": "gobang"
+                                                        },
+                                                        "id": 3018,
+                                                        "name": "Identifier",
+                                                        "src": "626:6:5"
+                                                      }
+                                                    ],
+                                                    "id": 3019,
+                                                    "name": "FunctionCall",
+                                                    "src": "618:15:5"
+                                                  }
+                                                ],
+                                                "id": 3020,
+                                                "name": "MemberAccess",
+                                                "src": "618:20:5"
+                                              }
+                                            ],
+                                            "id": 3021,
+                                            "name": "MemberAccess",
+                                            "src": "618:26:5"
+                                          },
+                                          {
+                                            "attributes": {
+                                              "argumentTypes": null,
+                                              "overloadedDeclarations": [
+                                                null
+                                              ],
+                                              "referencedDeclaration": 3010,
+                                              "type": "uint256",
+                                              "value": "fee"
+                                            },
+                                            "id": 3022,
+                                            "name": "Identifier",
+                                            "src": "645:3:5"
+                                          }
+                                        ],
+                                        "id": 3023,
+                                        "name": "FunctionCall",
+                                        "src": "618:31:5"
+                                      }
+                                    ],
+                                    "id": 3024,
+                                    "name": "MemberAccess",
+                                    "src": "618:35:5"
+                                  },
+                                  {
+                                    "attributes": {
+                                      "argumentTypes": null,
+                                      "hexvalue": "323030303030",
+                                      "isConstant": false,
+                                      "isLValue": false,
+                                      "isPure": true,
+                                      "lValueRequested": false,
+                                      "subdenomination": null,
+                                      "token": "number",
+                                      "type": "int_const 200000",
+                                      "value": "200000"
+                                    },
+                                    "id": 3025,
+                                    "name": "Literal",
+                                    "src": "654:6:5"
+                                  }
+                                ],
+                                "id": 3026,
+                                "name": "FunctionCall",
+                                "src": "618:43:5"
+                              },
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "isConstant": false,
+                                  "isLValue": false,
+                                  "isPure": true,
+                                  "isStructConstructorCall": false,
+                                  "lValueRequested": false,
+                                  "names": [
+                                    null
+                                  ],
+                                  "type": "bytes memory",
+                                  "type_conversion": false
+                                },
+                                "children": [
+                                  {
+                                    "attributes": {
+                                      "argumentTypes": [
+                                        {
+                                          "typeIdentifier": "t_stringliteral_b688a363d90314aa28962431094bdeae43b86d0bcf9e1cc4fa2adc1d160e5ef7",
+                                          "typeString": "literal_string \"join()\""
+                                        }
+                                      ],
+                                      "isConstant": false,
+                                      "isLValue": false,
+                                      "isPure": true,
+                                      "lValueRequested": false,
+                                      "member_name": "encodeWithSignature",
+                                      "referencedDeclaration": null,
+                                      "type": "function (string memory) pure returns (bytes memory)"
+                                    },
+                                    "children": [
+                                      {
+                                        "attributes": {
+                                          "argumentTypes": null,
+                                          "overloadedDeclarations": [
+                                            null
+                                          ],
+                                          "referencedDeclaration": 3038,
+                                          "type": "abi",
+                                          "value": "abi"
+                                        },
+                                        "id": 3027,
+                                        "name": "Identifier",
+                                        "src": "662:3:5"
+                                      }
+                                    ],
+                                    "id": 3028,
+                                    "name": "MemberAccess",
+                                    "src": "662:23:5"
+                                  },
+                                  {
+                                    "attributes": {
+                                      "argumentTypes": null,
+                                      "hexvalue": "6a6f696e2829",
+                                      "isConstant": false,
+                                      "isLValue": false,
+                                      "isPure": true,
+                                      "lValueRequested": false,
+                                      "subdenomination": null,
+                                      "token": "string",
+                                      "type": "literal_string \"join()\"",
+                                      "value": "join()"
+                                    },
+                                    "id": 3029,
+                                    "name": "Literal",
+                                    "src": "686:8:5"
+                                  }
+                                ],
+                                "id": 3030,
+                                "name": "FunctionCall",
+                                "src": "662:33:5"
+                              }
+                            ],
+                            "id": 3031,
+                            "name": "FunctionCall",
+                            "src": "618:78:5"
+                          }
+                        ],
+                        "id": 3032,
+                        "name": "Assignment",
+                        "src": "604:92:5"
+                      }
+                    ],
+                    "id": 3033,
+                    "name": "ExpressionStatement",
+                    "src": "604:92:5"
+                  }
+                ],
+                "id": 3034,
+                "name": "Block",
+                "src": "593:111:5"
+              }
+            ],
+            "id": 3035,
+            "name": "FunctionDefinition",
+            "src": "540:164:5"
+          }
+        ],
+        "id": 3036,
+        "name": "ContractDefinition",
+        "src": "50:696:5"
+      }
+    ],
+    "id": 3037,
+    "name": "SourceUnit",
+    "src": "0:746:5"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.5.16+commit.9c3226ce.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "3.4.7",
+  "updatedAt": "2022-05-04T01:33:39.134Z",
+  "devdoc": {
+    "methods": {}
+  },
+  "userdoc": {
+    "methods": {}
+  }
+}

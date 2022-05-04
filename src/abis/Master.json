@@ -1,0 +1,485 @@
+{
+  "contractName": "Master",
+  "abi": [
+    {
+      "inputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "getGoBang",
+      "outputs": [
+        {
+          "internalType": "contract GoBang",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "metadata": "{\"compiler\":{\"version\":\"0.5.16+commit.9c3226ce\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"constant\":true,\"inputs\":[],\"name\":\"getGoBang\",\"outputs\":[{\"internalType\":\"contract GoBang\",\"name\":\"\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"methods\":{}},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"project:/src/contracts/Master.sol\":\"Master\"},\"evmVersion\":\"istanbul\",\"libraries\":{},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"project:/src/contracts/ERC721Full.sol\":{\"keccak256\":\"0x1ff336131619880c0d88b63c7ec17fd8341a9e5a8528d3e575cdbb53358263b1\",\"urls\":[\"bzz-raw://eb8125668f49f0a63ec8e252cbf663d74f7a108a13a19d5710122737a0ffd38a\",\"dweb:/ipfs/QmWcr8gNQEPU6wFaJHBAdXq8yiC6YCJHjvA3bagud7NyoB\"]},\"project:/src/contracts/GoBang.sol\":{\"keccak256\":\"0xb3f4c5e5bcd0157ad13cdc7e1c78b0584b0703beaf5497c45578be89a94373be\",\"urls\":[\"bzz-raw://277122233c86a5c9ff84f990bce05771561dabe8192db075287459c42f1d2443\",\"dweb:/ipfs/QmTRPmzWj4KHH1pg3L4vxTHd4K7orJat6i8xrxRog6srES\"]},\"project:/src/contracts/Master.sol\":{\"keccak256\":\"0xc548b302a9833b4f2d0261e7ed11ca287d6a5ce37353c34aae8500a607d1fcf6\",\"urls\":[\"bzz-raw://9e0b35826d32bd7f7cd490367e62e40d31ca18e9933437a4e1ca205b8d667127\",\"dweb:/ipfs/QmeeYbFmD4jMNGiLCmswYqg3FozPLgDRRACLAcaWYBXHD1\"]}},\"version\":1}",
+  "bytecode": "0x608060405234801561001057600080fd5b5060d38061001f6000396000f3fe6080604052348015600f57600080fd5b506004361060285760003560e01c80639b188a0314602d575b600080fd5b60336075565b604051808273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200191505060405180910390f35b60008060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1690509056fea265627a7a72315820051dc80e8902d51bcccdcc1e0daa1bc16f275c45102ffc31195ed5661e4aefa264736f6c63430005100032",
+  "deployedBytecode": "0x6080604052348015600f57600080fd5b506004361060285760003560e01c80639b188a0314602d575b600080fd5b60336075565b604051808273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200191505060405180910390f35b60008060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1690509056fea265627a7a72315820051dc80e8902d51bcccdcc1e0daa1bc16f275c45102ffc31195ed5661e4aefa264736f6c63430005100032",
+  "sourceMap": "50:203:2:-;;;92:71;8:9:-1;5:2;;;30:1;27;20:12;5:2;92:71:2;50:203;;;;;;",
+  "deployedSourceMap": "50:203:2:-;;;;8:9:-1;5:2;;;30:1;27;20:12;5:2;50:203:2;;;;;;;;;;;;;;;;;;;169:81;;;:::i;:::-;;;;;;;;;;;;;;;;;;;;;;;;210:6;236;;;;;;;;;;;229:13;;169:81;:::o",
+  "source": "pragma solidity ^0.5.16;\r\nimport \"./GoBang.sol\";\r\ncontract Master{\r\n    GoBang gobang;\r\n    constructor() public {\r\n       // gobang = new GoBang(30, 1, 2);\r\n    }\r\n    function getGoBang() view public returns(GoBang) {\r\n        return gobang;\r\n    }\r\n}\r\n",
+  "sourcePath": "E:\\masterstudy\\2022S1\\cycurrency\\research\\blockchain_game\\src\\contracts\\Master.sol",
+  "ast": {
+    "absolutePath": "project:/src/contracts/Master.sol",
+    "exportedSymbols": {
+      "Master": [
+        2167
+      ]
+    },
+    "id": 2168,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 2151,
+        "literals": [
+          "solidity",
+          "^",
+          "0.5",
+          ".16"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:24:2"
+      },
+      {
+        "absolutePath": "project:/src/contracts/GoBang.sol",
+        "file": "./GoBang.sol",
+        "id": 2152,
+        "nodeType": "ImportDirective",
+        "scope": 2168,
+        "sourceUnit": 2150,
+        "src": "26:22:2",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "documentation": null,
+        "fullyImplemented": true,
+        "id": 2167,
+        "linearizedBaseContracts": [
+          2167
+        ],
+        "name": "Master",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "constant": false,
+            "id": 2154,
+            "name": "gobang",
+            "nodeType": "VariableDeclaration",
+            "scope": 2167,
+            "src": "72:13:2",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_contract$_GoBang_$2149",
+              "typeString": "contract GoBang"
+            },
+            "typeName": {
+              "contractScope": null,
+              "id": 2153,
+              "name": "GoBang",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 2149,
+              "src": "72:6:2",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_GoBang_$2149",
+                "typeString": "contract GoBang"
+              }
+            },
+            "value": null,
+            "visibility": "internal"
+          },
+          {
+            "body": {
+              "id": 2157,
+              "nodeType": "Block",
+              "src": "113:50:2",
+              "statements": []
+            },
+            "documentation": null,
+            "id": 2158,
+            "implemented": true,
+            "kind": "constructor",
+            "modifiers": [],
+            "name": "",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2155,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "103:2:2"
+            },
+            "returnParameters": {
+              "id": 2156,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "113:0:2"
+            },
+            "scope": 2167,
+            "src": "92:71:2",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 2165,
+              "nodeType": "Block",
+              "src": "218:32:2",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 2163,
+                    "name": "gobang",
+                    "nodeType": "Identifier",
+                    "overloadedDeclarations": [],
+                    "referencedDeclaration": 2154,
+                    "src": "236:6:2",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_contract$_GoBang_$2149",
+                      "typeString": "contract GoBang"
+                    }
+                  },
+                  "functionReturnParameters": 2162,
+                  "id": 2164,
+                  "nodeType": "Return",
+                  "src": "229:13:2"
+                }
+              ]
+            },
+            "documentation": null,
+            "id": 2166,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getGoBang",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2159,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "187:2:2"
+            },
+            "returnParameters": {
+              "id": 2162,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2161,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2166,
+                  "src": "210:6:2",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_contract$_GoBang_$2149",
+                    "typeString": "contract GoBang"
+                  },
+                  "typeName": {
+                    "contractScope": null,
+                    "id": 2160,
+                    "name": "GoBang",
+                    "nodeType": "UserDefinedTypeName",
+                    "referencedDeclaration": 2149,
+                    "src": "210:6:2",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_contract$_GoBang_$2149",
+                      "typeString": "contract GoBang"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "209:8:2"
+            },
+            "scope": 2167,
+            "src": "169:81:2",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "public"
+          }
+        ],
+        "scope": 2168,
+        "src": "50:203:2"
+      }
+    ],
+    "src": "0:255:2"
+  },
+  "legacyAST": {
+    "attributes": {
+      "absolutePath": "project:/src/contracts/Master.sol",
+      "exportedSymbols": {
+        "Master": [
+          2167
+        ]
+      }
+    },
+    "children": [
+      {
+        "attributes": {
+          "literals": [
+            "solidity",
+            "^",
+            "0.5",
+            ".16"
+          ]
+        },
+        "id": 2151,
+        "name": "PragmaDirective",
+        "src": "0:24:2"
+      },
+      {
+        "attributes": {
+          "SourceUnit": 2150,
+          "absolutePath": "project:/src/contracts/GoBang.sol",
+          "file": "./GoBang.sol",
+          "scope": 2168,
+          "symbolAliases": [
+            null
+          ],
+          "unitAlias": ""
+        },
+        "id": 2152,
+        "name": "ImportDirective",
+        "src": "26:22:2"
+      },
+      {
+        "attributes": {
+          "baseContracts": [
+            null
+          ],
+          "contractDependencies": [
+            null
+          ],
+          "contractKind": "contract",
+          "documentation": null,
+          "fullyImplemented": true,
+          "linearizedBaseContracts": [
+            2167
+          ],
+          "name": "Master",
+          "scope": 2168
+        },
+        "children": [
+          {
+            "attributes": {
+              "constant": false,
+              "name": "gobang",
+              "scope": 2167,
+              "stateVariable": true,
+              "storageLocation": "default",
+              "type": "contract GoBang",
+              "value": null,
+              "visibility": "internal"
+            },
+            "children": [
+              {
+                "attributes": {
+                  "contractScope": null,
+                  "name": "GoBang",
+                  "referencedDeclaration": 2149,
+                  "type": "contract GoBang"
+                },
+                "id": 2153,
+                "name": "UserDefinedTypeName",
+                "src": "72:6:2"
+              }
+            ],
+            "id": 2154,
+            "name": "VariableDeclaration",
+            "src": "72:13:2"
+          },
+          {
+            "attributes": {
+              "documentation": null,
+              "implemented": true,
+              "isConstructor": true,
+              "kind": "constructor",
+              "modifiers": [
+                null
+              ],
+              "name": "",
+              "scope": 2167,
+              "stateMutability": "nonpayable",
+              "superFunction": null,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 2155,
+                "name": "ParameterList",
+                "src": "103:2:2"
+              },
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 2156,
+                "name": "ParameterList",
+                "src": "113:0:2"
+              },
+              {
+                "attributes": {
+                  "statements": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 2157,
+                "name": "Block",
+                "src": "113:50:2"
+              }
+            ],
+            "id": 2158,
+            "name": "FunctionDefinition",
+            "src": "92:71:2"
+          },
+          {
+            "attributes": {
+              "documentation": null,
+              "implemented": true,
+              "isConstructor": false,
+              "kind": "function",
+              "modifiers": [
+                null
+              ],
+              "name": "getGoBang",
+              "scope": 2167,
+              "stateMutability": "view",
+              "superFunction": null,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 2159,
+                "name": "ParameterList",
+                "src": "187:2:2"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "",
+                      "scope": 2166,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "contract GoBang",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "contractScope": null,
+                          "name": "GoBang",
+                          "referencedDeclaration": 2149,
+                          "type": "contract GoBang"
+                        },
+                        "id": 2160,
+                        "name": "UserDefinedTypeName",
+                        "src": "210:6:2"
+                      }
+                    ],
+                    "id": 2161,
+                    "name": "VariableDeclaration",
+                    "src": "210:6:2"
+                  }
+                ],
+                "id": 2162,
+                "name": "ParameterList",
+                "src": "209:8:2"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "functionReturnParameters": 2162
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "overloadedDeclarations": [
+                            null
+                          ],
+                          "referencedDeclaration": 2154,
+                          "type": "contract GoBang",
+                          "value": "gobang"
+                        },
+                        "id": 2163,
+                        "name": "Identifier",
+                        "src": "236:6:2"
+                      }
+                    ],
+                    "id": 2164,
+                    "name": "Return",
+                    "src": "229:13:2"
+                  }
+                ],
+                "id": 2165,
+                "name": "Block",
+                "src": "218:32:2"
+              }
+            ],
+            "id": 2166,
+            "name": "FunctionDefinition",
+            "src": "169:81:2"
+          }
+        ],
+        "id": 2167,
+        "name": "ContractDefinition",
+        "src": "50:203:2"
+      }
+    ],
+    "id": 2168,
+    "name": "SourceUnit",
+    "src": "0:255:2"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.5.16+commit.9c3226ce.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "3.4.7",
+  "updatedAt": "2022-05-04T01:33:39.115Z",
+  "devdoc": {
+    "methods": {}
+  },
+  "userdoc": {
+    "methods": {}
+  }
+}

@@ -1,0 +1,63 @@
+/* Styles go here */
+/* 
+.token {
+  height: 150px;
+  width: 150px;
+  border-radius: 50%;
+  display: inline-block;
+} */
+
+.main{
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.main-cell{
+  /* border: 1px solid #000;
+  width: 50px;
+  height: 50px; */
+  position: relative;
+}
+.main-cell-single{
+  border: 1px solid rgb(131, 130, 130);
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  /* align-items: center;
+  justify-content: center; */
+}
+.main-cell-click{
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  z-index: 12;
+  margin-right: -20px;
+  margin-bottom: -20px;
+}
+.main-cell-black{
+  width: 40px;
+  height: 40px;
+  margin-right: -20px;
+  margin-bottom: -20px;
+  border-radius: 50%;
+  background-color: #333333;
+  /* border: 1px solid #000; */
+  box-shadow: 0px 2px 5px 2px #eee;
+}
+.main-cell-white{
+  position: relative;
+  z-index: 11;
+  margin-right: -20px;
+  margin-bottom: -20px;
+  width: 40px;
+  height: 40px;
+  /* border: 1px solid rgb(102, 101, 101); */
+  border-radius: 50%;
+  background-color: #fff;
+  box-shadow: 0px 2px 5px 2px rgb(226, 226, 226);
+  
+}
