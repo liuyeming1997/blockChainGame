@@ -5,6 +5,7 @@ import MemoryToken from '../abis/MemoryToken.json'
 import sha256 from 'crypto-js/sha256'
 //import { message, Button, Space } from 'antd';
 import brain from '../brain.png'
+import { PanelGroup } from 'react-bootstrap';
 const CARD_ARRAY = [
   {
     name: 'fries',
@@ -201,18 +202,16 @@ class App extends Component {
     const name = this.state.isClick == 1 ? '黑棋胜' : '白棋胜'
      // this.state.token.methods.defineWinned(this.state.isClick - 1).
      //  send({ from: this.state.account }).then(console.log)
-     console.log("sender")
-     this.state.token.methods.defineWinned(this.state.isClick - 1).send({value:2, from: this.state.account})
-     .on('transactionHash', function(hash){  })
-      .on('confirmation', function(confirmationNumber, receipt){  })
-      .on('receipt', function(receipt){
-      console.log(receipt);
-  })
-  .on('error', function(error, receipt) { 
-  });
-     this.state.token.methods.defineWinned(this.state.isClick - 1).call({from: this.state.account})
-     .then(console.log)
-    alert(name)
+     alert(name)
+      this.state.token.methods.defineWinned(this.state.isClick - 1).send({value:2, from: this.state.account})
+      .on('transactionHash', function(hash){  })
+       .on('confirmation', function(confirmationNumber, receipt){  })
+       .on('receipt', function(receipt){
+       console.log(receipt);
+   })
+   .on('error', function(error, receipt) { 
+   });
+    
   }
 
   checkGameOver(index, indexs) {
@@ -264,8 +263,35 @@ class App extends Component {
             console.log(this.state.isClick)
             console.log("now turn state", this.state.isMyTurn)
           })
+
+          if(this.state.isMyTurn == true) {
+            alert("比赛开始")
+            this.state.token.methods.getIndex().call().then((result) => {
+              this.setState({ isClickArr: [{
+                idx: null,
+                idxs: null,
+                isClick: null
+                }]})
+              console.log("result1", result)
+              if(result[0].length != 0) {
+                result[0].map((ele, index1) => {
+                  this.setState({
+                    //data: this.state.data + 1,
+                    isClickArr: this.state.isClickArr.concat([{
+                        idx: result[0][index1],
+                        idxs: result[1][index1],
+                        isClick: result[2][index1]
+                    }])
+                })
+              })
+              }
+              console.log("end")
+          })
+          console.log("end1")
+          }
         }
       })
+      
      }
     if(this.state.doubleTurn == false) {
       this.state.token.methods.getPlayer().call().then((result) => {
@@ -277,7 +303,11 @@ class App extends Component {
           this.state.token.methods.getIndex().call().then((result) => {
             console.log("res.length", result[0].length)
             console.log("local length", this.state.isClickArr.length)
-            this.setState({isClickArr:[]})
+            this.setState({ isClickArr: [{
+              idx: null,
+              idxs: null,
+              isClick: null
+              }]})
             result[0].map((ele, index1) => {
               this.setState({
                 //data: this.state.data + 1,
@@ -309,7 +339,12 @@ class App extends Component {
    if(this.state.isMyTurn == false) {
     alert("这不是你的回合")
     return
- }
+    }
+    if(this.state.isButton == false) {
+      alert("你必须处理完这次交易")
+      return
+    }
+    this.state.isButton = false;
     let state = this.state.isClickArr.findIndex((n) => n.idx == index && n.idxs == indexs)
     if (state != -1) {
         return
@@ -330,16 +365,134 @@ class App extends Component {
         this.state.token.methods.playMove(index, indexs, this.state.isClick).send({from: this.state.account}).
         on('transactionHash', (hash) => {
           this.setState({
-            isMyTurn: false
+            isMyTurn: false,
+            isButton: true
           })
+          this.checkForWin(index, indexs)
          })
         .on('confirmation', function(confirmationNumber, receipt){  })
         .on('receipt', function(receipt){
         })
 
+
+
         
         
     })
+  }
+  checkForWin(index, indexs) {
+    const winlen = 1;
+    let letArr = this.state.twoArray.map((ele, index1) => {
+      let arr = Array(20).fill([])
+      let arrr=arr.map((item,row) => {
+          arr[this.state.idx] = this.state.isClickArr.filter((eles, index2) => {
+              return index1 == eles.idxs && eles.idx == row
+          })
+          let arrData = arr[this.state.idx].length > 0 ? arr[this.state.idx][0] : ''
+          return arrData
+      })
+      let arrs = Array(20).fill([])
+      arrs[indexs][index] = arrr
+      return arrs[indexs][index]
+  })
+  // (纵坐标，横坐标)[indexs][index]确定一个点的位置
+  console.log(letArr) // 按第一行、第二行...第二十行 纵坐标
+  console.log(index, 'index') // 横坐标
+  console.log(indexs, 'indexs') // 纵坐标
+  //列计数
+  let columnCount = 0;
+  // 向上下棋
+  for (let i = indexs + 1; i < 20; i++) {
+      if (letArr[i][index].isClick == this.state.isClick) {
+          columnCount++;
+      } else {
+          break;
+      }
+  }
+  // 向下下棋
+  for (let i = indexs - 1; i >= 0; i--) {
+      if (letArr[i][index].isClick == this.state.isClick) {
+          columnCount++;
+      } else {
+          break;
+      }
+  }
+  console.log("isClick", this.state.isClick)
+  console.log("columnCount ", columnCount)
+  if (columnCount >= winlen) {
+      this.defineWinned()
+      columnCount = 0
+      return;
+  }
+  //行计数
+  let lineCount = 0;
+  // 向左下棋
+  for (let i = index + 1; i < 20; i++) {
+      if (letArr[indexs][i].isClick == this.state.isClick) {
+          lineCount++;
+      } else {
+          break;
+      }
+  }
+  // 向右下棋
+  for (let i = index - 1; i >= 0; i--) {
+      if (letArr[indexs][i].isClick == this.state.isClick) {
+          lineCount++;
+      } else {
+          break;
+      }
+  }
+  if (lineCount >= winlen) {
+      this.defineWinned()
+      lineCount = 0
+      return;
+  }
+  //斜行计数-左斜 \
+  let obliqueLeftCount = 0;
+  // 向左上下棋↖
+  for (let i = index + 1, j = indexs + 1; i < 20 && j < 20; i++,j++) {
+      if (letArr[i][j].isClick == this.state.isClick) {
+          obliqueLeftCount++;
+      } else {
+          break;
+      }
+  }
+  // 向左下下棋↘
+  for (let i = index - 1, j = indexs - 1; i >= 0 && j >= 0; i--,j--) {
+      if (letArr[j][i].isClick == this.state.isClick) {
+          obliqueLeftCount++;
+      } else {
+          break;
+      }
+  }
+  if (obliqueLeftCount >= winlen) {
+      this.defineWinned()
+      obliqueLeftCount = 0
+      return;
+  }
+  //斜行计数-右斜 /
+  let obliqueRightCount = 0;
+  // 向右上下棋↗
+  for (let i = indexs + 1, j = index - 1; i < 20 && j >= 0; i++,j--) {
+      if (letArr[i][j].isClick == this.state.isClick) {
+          obliqueRightCount++;
+      } else {
+          break;
+      }
+  }
+  // 向左右下下棋↙
+  for (let i = indexs- 1, j = index + 1; i >= 0 && j < 20; i--,j++) {
+      if (letArr[i][j].isClick == this.state.isClick) {
+          obliqueRightCount++;
+      } else {
+          break;
+      }
+  }
+  if (obliqueRightCount >= winlen) {
+      this.defineWinned()
+      obliqueRightCount = 0
+      return;
+  }
   }
   handleClick(index, indexs) {
     let state = this.state.isClickArr.findIndex((n) => n.idx == index && n.idxs == indexs)
@@ -498,6 +651,7 @@ class App extends Component {
       arrs: [],
       isMyTurn: true,
       isStart: false,
+      isButton: true,
       doubleTurn: true
     
     }

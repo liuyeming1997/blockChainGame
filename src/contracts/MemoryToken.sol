@@ -49,7 +49,7 @@ contract MemoryToken{
         isOver = false;
         isStart = false;
         _fee = 3 ether;
-        _bonus = 2 ether;
+        _bonus = 5 ether;
         _turnLength = 5;
         matchNum = 0;
         _currentPlayer = 1;
@@ -99,7 +99,7 @@ contract MemoryToken{
         //mint(_playerAddress[winner], "1");
         //safeTransferFrom(address(this), _playerAddress[winner], matchNum);
         require(address(this).balance >= _bonus);
-        address(msg.sender).transfer(2 ether);
+        address(msg.sender).transfer(_bonus);
         isMatch = false;
         if(address(this).balance == 0) {
             isOver = true;
