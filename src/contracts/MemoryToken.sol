@@ -26,11 +26,13 @@ contract MemoryToken{
     uint256 _turnDeadline;
 
     bool isMatch;
+    bool isStart;
     uint _fee;
     uint _bonus;
     bool isOver;
     uint256 matchNum;
     uint cnt;
+    bool playLock;
     /*
     function mint(address _to, string memory _tokenURI) public returns(bool) {
        //require(_to != address(0));
@@ -45,12 +47,14 @@ contract MemoryToken{
         _playerAddress[1] = address(0);
         isMatch = false;
         isOver = false;
+        isStart = false;
         _fee = 3 ether;
         _bonus = 2 ether;
         _turnLength = 5;
         matchNum = 0;
         _currentPlayer = 1;
         cnt = 0;
+        playLock = false;
     }
     function setNonce1(bytes32 p1Commitment) public {
         require(msg.sender == _playerAddress[0]);
@@ -58,7 +62,7 @@ contract MemoryToken{
 
     }
     // Join a game as the second player .
-    function joinGame (uint8 p2Nonce, address payable player1) public payable {
+    function joinGame (uint8 p2Nonce, address payable player2) public payable {
         require(isOver == false);
         require(msg.value == _fee);
         //require(isMatch == false);
@@ -68,18 +72,21 @@ contract MemoryToken{
             revert();
         }
         _p2Nonce = p2Nonce;
-        _playerAddress[0] = player1;
+        _playerAddress[1] = player2;
 
     }
     
 
     // Revealing player 1’s nonce to choose who goes first .
     //function startGame (uint8 p1Nonce, bytes32 p1Commitment) public payable{
-    function startGame () public payable{
-        require(isOver == false);
+    function startGame (uint8 p2Nonce, address payable player1) public payable{
+        //require(isOver == false);
         require(_playerAddress[1] != address(0));
         // require (p1Commitment == _p1Commitment);
         // _currentPlayer = (p1Nonce ^ _p2Nonce) & 0x01 ;
+         _p2Nonce = p2Nonce;
+         isStart = true;
+        _playerAddress[0] = player1;
         _currentPlayer = 0;
         _turnDeadline = block.number + _turnLength ;
     }
@@ -220,25 +227,29 @@ contract MemoryToken{
 
     
     // Submit a move
-    function getIndex() public view returns(uint8 [] memory, uint8 [] memory, uint8 [] memory) {
-        return (_index, _indexs, _status);
+    function getIndex() public view returns(uint8 [] memory, uint8 [] memory, uint8 [] memory, address) {
+        require(playLock == false);
+        return (_index, _indexs, _status, _playerAddress[_currentPlayer]);
     }
-    function getStatus() public view returns(uint8 [] memory) {
-        return _status;
+    function getStart() public view returns(bool) {
+        return isStart;
     }
-    function getIndexs() public view returns(uint8 [] memory) {
-        return _indexs;
+    function getPlayer() public view returns(address, uint8) {
+        require(playLock == false);
+        return  (_playerAddress[_currentPlayer], _currentPlayer);
     }
-    function playMove(uint8 index, uint8 indexs) public returns(bool, uint){
+    
+    function playMove(uint8 index, uint8 indexs, uint8 status) public returns(bool, uint){
     // make sure correct player is submitting a move
         //require (msg.sender == _playerAddress[_currentPlayer^0x01]) ;
 
         // claim this square for the current player .
+        require(playLock == false);
+        playLock = true;
+        _currentPlayer ^= 0x01 ;
         _index.push(index);
         _indexs.push(indexs);
-        _status.push(_currentPlayer + 1);
-      
-
+        _status.push(status);
         // If the game is won , send the pot to the winner
         
         // if (this.checkGameOver(index, indexs)) {
@@ -246,10 +257,10 @@ contract MemoryToken{
         //  }
         // Flip the current player
        // _currentPlayer = _currentPlayer == 0? 1:0;
-        _currentPlayer ^= 0x01 ;
 
         // start the clock for the next move
         _turnDeadline = block.number + _turnLength ;
+        playLock = false;
         return (false,  _currentPlayer);
     }
     function playMoveNew() public returns(string memory){

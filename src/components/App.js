@@ -59,9 +59,10 @@ class App extends Component {
   async componentWillMount() {
     await this.loadWeb3()
     await this.loadBlockchainData()
-    this.setState({ cardArray: CARD_ARRAY.sort(() => 0.5 - Math.random()) })
   }
-
+  componentDidMount() {
+    this.func();
+  }
   async loadWeb3() {
     if (window.ethereum) {
       window.web3 = new Web3(window.ethereum)
@@ -73,6 +74,11 @@ class App extends Component {
     else {
       window.alert('Non-Ethereum browser detected. You should consider trying MetaMask!')
     }
+  }
+  func=() => {
+    setInterval(() => {
+      this.updateClickArr()
+    }, 5000);
   }
   async loadBlockchainData() {
     const web3 = window.web3
@@ -88,6 +94,8 @@ class App extends Component {
       //const address = "0x08425a1B69d7Bd7De5b857EafAA74466d89284af"
       const token = await new web3.eth.Contract(abi, address)
       this.setState({ token })
+      this.initData();
+      //this.updateClickArr()
       /*const totalSupply = await token.methods.totalSupply().call().then(console.log)
       this.setState({ totalSupply })
       //token.methods.playMoveNew().call().then(console.log)
@@ -169,7 +177,7 @@ class App extends Component {
 
   ///////////////////////////////////////////////////////////////////
   MasterSendMoneyToContract() {
-    this.state.token.methods.SendMoneyToContract().send({value:80*1e18, from: this.state.account})
+    this.state.token.methods.startGame(1, this.state.account).send({value:3*1e18, from: this.state.account})
         .on('transactionHash', function(hash){  })
         .on('confirmation', function(confirmationNumber, receipt){  })
         .on('receipt', function(receipt){
@@ -210,94 +218,124 @@ class App extends Component {
   checkGameOver(index, indexs) {
       this.state.token.methods.checkGameOver(index, indexs).call().then(console.log)
   }
-  updateClickArr() {
+  initData() {
     this.state.token.methods.getIndex().call().then((result) => {
-      result[0].map((ele, index1) => {
-        this.setState({
-          data: this.state.data + 1,
-          isClick: this.state.data % 2 === 0 ? 1 : 2,
-          isClickArr: this.state.isClickArr.concat([{
+      if(result[0].length != this.state.isClickArr.length - 1) {
+        console.log("init res.length", result[0].length)
+        console.log("init local length", this.state.isClickArr.length)
+        this.setState({isClickArr:[]})
+          result[0].map((ele, index1) => {
+            this.setState({
               data: this.state.data + 1,
-              idx: result[0][index1],
-              idxs: result[1][index1],
-              isClick: result[2][index1]
-          }])
-      
-      })
-    })
+              isClick: this.state.data % 2 === 0 ? 1 : 2,
+              isClickArr: this.state.isClickArr.concat([{
+                  data: this.state.data + 1,
+                  idx: result[0][index1],
+                  idxs: result[1][index1],
+                  isClick: result[2][index1]
+              }])
+          })
+        })
+        if(this.state.account == result[3]) {
+          this.setState({isMyTurn: true})
+        } else {
+          this.setState({isMyTurn: false})
+        }
+      }
+     
   })
-    this.state.token.methods.getIndexs().call().then((result) => {
-      this.setState({
-        indexs:result
+  }
+  updateClickArr() {
+     if(this.state.isStart == false) {
+      this.state.token.methods.getStart().call().then((result) => {
+        if(result == true) {
+          console.log("kaishi")
+          this.state.isStart = true;
+          this.state.token.methods.getPlayer().call().then((result) => {
+            // console.log(result)
+            // console.log(this.state.account)
+            if(result[0] == this.state.account) {
+              this.state.isMyTurn = true;
+              this.setState({isClick: result[1] + 1})
+            } else {
+              this.state.isMyTurn = false;
+              this.setState({isClick: result[1]^1 + 1})
+            }
+            console.log(this.state.isClick)
+            console.log("now turn state", this.state.isMyTurn)
+          })
+        }
       })
-    })
-    this.state.token.methods.getStatus().call().then((result) => {
-      this.setState({
-        status:result
+     }
+    if(this.state.doubleTurn == false) {
+      this.state.token.methods.getPlayer().call().then((result) => {
+        // console.log("update res.length", result[0].length)
+        console.log(result)
+        // console.log("update local length", this.state.isClickArr.length)
+        if(result[0] == this.state.account) {
+          alert("到你了")
+          this.state.token.methods.getIndex().call().then((result) => {
+            console.log("res.length", result[0].length)
+            console.log("local length", this.state.isClickArr.length)
+            this.setState({isClickArr:[]})
+            result[0].map((ele, index1) => {
+              this.setState({
+                //data: this.state.data + 1,
+                isClickArr: this.state.isClickArr.concat([{
+                    idx: result[0][index1],
+                    idxs: result[1][index1],
+                    isClick: result[2][index1]
+                }])
+            })
+          })
+         
       })
-    })
+      this.state.isMyTurn = true;
+      this.state.doubleTurn = true;
+        } 
+      })
+      
+    }
+    if(this.state.isMyTurn == false) {
+      this.state.doubleTurn = false;
+    }
+    
   }
   handleClickNew(index, indexs) {
+    if(this.state.isStart == false) {
+      alert("比赛还没有开始")
+      return
+   }
+   if(this.state.isMyTurn == false) {
+    alert("这不是你的回合")
+    return
+ }
     let state = this.state.isClickArr.findIndex((n) => n.idx == index && n.idxs == indexs)
     if (state != -1) {
         return
     }
     this.setState({
-        data: this.state.data + 1,
         idx: index,
         idxs: indexs,
-        isClick: this.state.data % 2 === 0 ? 1 : 2,
         isClickArr: this.state.isClickArr.concat([{
-            data: this.state.data + 1,
+            data: 0,
             idx: index,
             idxs: indexs,
-            isClick: this.state.data % 2 === 0 ? 1 : 2
+            isClick: this.state.isClick
         }])
     }, () => {
-        let letArr = this.state.twoArray.map((ele, index1) => {
-            let arr = Array(20).fill([])
-            let arrr=arr.map((item,row) => {
-                arr[this.state.idx] = this.state.isClickArr.filter((eles, index2) => {
-                    return index1 == eles.idxs && eles.idx == row
-                })
-                let arrData = arr[this.state.idx].length > 0 ? arr[this.state.idx][0] : ''
-                return arrData
-            })
-            let arrs = Array(20).fill([])
-            arrs[indexs][index] = arrr
-            return arrs[indexs][index]
-        })
-        // (纵坐标，横坐标)[indexs][index]确定一个点的位置
-        console.log(letArr) // 按第一行、第二行...第二十行 纵坐标
-        console.log(index, 'index') // 横坐标
-        console.log(indexs, 'indexs') // 纵坐标
-        //列计数
-        //this.state.token.methods.playMove(index, indexs).call().then(console.log)
-        this.state.token.methods.getIndex().call().then((result) => {
-          console.log(result)
-        })
-        this.state.token.methods.getIndexs().call().then((result) => {
-          console.log(result)
-        })
-        this.state.token.methods.getStatus().call().then((result) => {
-          console.log(result)
-        })
-        this.state.token.methods.playMove(index, indexs).send({from: this.state.account}).
-        on('transactionHash', function(hash){ 
-  
+        console.log("index", index)
+        console.log("indexs", indexs)
+        console.log("state", this.state.isClick)
+        this.state.token.methods.playMove(index, indexs, this.state.isClick).send({from: this.state.account}).
+        on('transactionHash', (hash) => {
+          this.setState({
+            isMyTurn: false
+          })
          })
         .on('confirmation', function(confirmationNumber, receipt){  })
         .on('receipt', function(receipt){
-          console.log(receipt);
         })
-        //console.log(flag)
-        /*if(flag == true) {
-          const name = this.state.isClick == 1 ? '黑棋胜' : '白棋胜'
-          alert(name)
-          console.log("胜负已分")
-        } else if(flag == false) {
-          console.log("比赛继续")
-        }*/
 
         
         
@@ -449,20 +487,18 @@ class App extends Component {
       ///////////////////////
       arr: Array(20).fill(null),
       isClick: null,
-      data: 0, // 点击黑白点的次数
       idx: 0, // 点击点的的横坐标
       idxs: 0, // 点击点的纵坐标
       isClickArr: [{
-                data: null,
                 idx: null,
                 idxs: null,
                 isClick: null
       }], // 存放点击过的点的数组
       twoArray: Array(20).fill([]), // 存放点击过的点的数组
       arrs: [],
-      index: [],
-      indexs: [],
-      status: []
+      isMyTurn: true,
+      isStart: false,
+      doubleTurn: true
     
     }
   }
@@ -482,7 +518,7 @@ class App extends Component {
           >
           &nbsp; GoBang
           </a>
-          <button type="button" onClick={() => self.MasterSendMoneyToContract()}> import money </button>
+          <button type="button" onClick={() => self.MasterSendMoneyToContract()}> start game </button>
           <button type="button" onClick={() => self.JoinGame()}> join game </button>
           <button type="button" onClick={() => self.updateClickArr()}> update </button>
           <ul className="navbar-nav px-3">
