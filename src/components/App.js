@@ -206,6 +206,37 @@ class App extends Component {
      .then(console.log)
     alert(name)
   }
+
+  checkGameOver(index, indexs) {
+      this.state.token.methods.checkGameOver(index, indexs).call().then(console.log)
+  }
+  updateClickArr() {
+    this.state.token.methods.getIndex().call().then((result) => {
+      result[0].map((ele, index1) => {
+        this.setState({
+          data: this.state.data + 1,
+          isClick: this.state.data % 2 === 0 ? 1 : 2,
+          isClickArr: this.state.isClickArr.concat([{
+              data: this.state.data + 1,
+              idx: result[0][index1],
+              idxs: result[1][index1],
+              isClick: result[2][index1]
+          }])
+      
+      })
+    })
+  })
+    this.state.token.methods.getIndexs().call().then((result) => {
+      this.setState({
+        indexs:result
+      })
+    })
+    this.state.token.methods.getStatus().call().then((result) => {
+      this.setState({
+        status:result
+      })
+    })
+  }
   handleClickNew(index, indexs) {
     let state = this.state.isClickArr.findIndex((n) => n.idx == index && n.idxs == indexs)
     if (state != -1) {
@@ -241,11 +272,34 @@ class App extends Component {
         console.log(index, 'index') // 横坐标
         console.log(indexs, 'indexs') // 纵坐标
         //列计数
+        //this.state.token.methods.playMove(index, indexs).call().then(console.log)
+        this.state.token.methods.getIndex().call().then((result) => {
+          console.log(result)
+        })
+        this.state.token.methods.getIndexs().call().then((result) => {
+          console.log(result)
+        })
+        this.state.token.methods.getStatus().call().then((result) => {
+          console.log(result)
+        })
+        this.state.token.methods.playMove(index, indexs).send({from: this.state.account}).
+        on('transactionHash', function(hash){ 
+  
+         })
+        .on('confirmation', function(confirmationNumber, receipt){  })
+        .on('receipt', function(receipt){
+          console.log(receipt);
+        })
+        //console.log(flag)
+        /*if(flag == true) {
+          const name = this.state.isClick == 1 ? '黑棋胜' : '白棋胜'
+          alert(name)
+          console.log("胜负已分")
+        } else if(flag == false) {
+          console.log("比赛继续")
+        }*/
 
-        this.state.token.methods.playMove(index, indexs).estimateGas({gas: 5000000}, function(error, gasAmount){
-          if(gasAmount == 5000000)
-              console.log('Method ran out of gas');
-      });
+        
         
     })
   }
@@ -405,13 +459,17 @@ class App extends Component {
                 isClick: null
       }], // 存放点击过的点的数组
       twoArray: Array(20).fill([]), // 存放点击过的点的数组
-      arrs: []
+      arrs: [],
+      index: [],
+      indexs: [],
+      status: []
     
     }
   }
 
   render() {
     var self = this;
+    //this.updateClickArr();
     return (
       
       <div className='main'>
@@ -426,6 +484,7 @@ class App extends Component {
           </a>
           <button type="button" onClick={() => self.MasterSendMoneyToContract()}> import money </button>
           <button type="button" onClick={() => self.JoinGame()}> join game </button>
+          <button type="button" onClick={() => self.updateClickArr()}> update </button>
           <ul className="navbar-nav px-3">
             <li className="nav-item text-nowrap d-none d-sm-none d-sm-block">
               <small className="text-muted"><span id="account">{this.state.account}</span></small>
@@ -440,7 +499,7 @@ class App extends Component {
                                     return <div className='main-cell-single' key={indexs}>
                                         {
                                             this.state.isClickArr.map((items, indexss) => {
-                                                return <div key={indexss} className='main-cell-click' onClick={() => self.handleClick(index, indexs)}>
+                                                return <div key={indexss} className='main-cell-click' onClick={() => self.handleClickNew(index, indexs)}>
                                                     {
                                                         items.isClick == 1 && items.idx == index && items.idxs == indexs
                                                             ? <div className='main-cell-black'></div>

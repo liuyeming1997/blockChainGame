@@ -18,7 +18,10 @@ contract MemoryToken{
     uint32 _turnLength ;
     bytes32 _p1Commitment;
     uint8 _p2Nonce;
-    uint8 [20][20] _board;
+    uint8 [] _index = new uint8[](0);
+    uint8 [] _indexs = new uint8[](0);
+    uint8 [] _status = new uint8[](0);
+    //uint8 [20][20] _board;
     uint8 _currentPlayer;
     uint256 _turnDeadline;
 
@@ -27,6 +30,7 @@ contract MemoryToken{
     uint _bonus;
     bool isOver;
     uint256 matchNum;
+    uint cnt;
     /*
     function mint(address _to, string memory _tokenURI) public returns(bool) {
        //require(_to != address(0));
@@ -45,6 +49,8 @@ contract MemoryToken{
         _bonus = 2 ether;
         _turnLength = 5;
         matchNum = 0;
+        _currentPlayer = 1;
+        cnt = 0;
     }
     function setNonce1(bytes32 p1Commitment) public {
         require(msg.sender == _playerAddress[0]);
@@ -86,7 +92,7 @@ contract MemoryToken{
         //mint(_playerAddress[winner], "1");
         //safeTransferFrom(address(this), _playerAddress[winner], matchNum);
         require(address(this).balance >= _bonus);
-        address(msg.sender).transfer(10 ether);
+        address(msg.sender).transfer(2 ether);
         isMatch = false;
         if(address(this).balance == 0) {
             isOver = true;
@@ -96,34 +102,40 @@ contract MemoryToken{
     function getBalance() public returns(uint) {
         return address(this).balance;
     }
-    
+    /*
     function checkGameOver(uint8 index, uint8 indexs) public returns(bool) {
+        uint currentPlayerRes = _currentPlayer + 1;
         uint8 columnCount = 0;
+        
         for (uint8 i = indexs + 1; i < 20; i++) {
-            if (_board[i][index] == _currentPlayer) {
+            if (_board[i][index] == currentPlayerRes) {
                 columnCount++;
             } else {
                 break;
             }
         }
-        // 向下下棋
         for (uint8 i = indexs - 1; i >= 0; i--) {
-            if (_board[i][index] == _currentPlayer) {
+            if (_board[i][index] == currentPlayerRes) {
                 columnCount++;
             } else {
                 break;
             }
         }
+        
+        // 向下下棋
+        
         if (columnCount >= 4) {
-            this.defineWinned(_currentPlayer);
+           // this.defineWinned(_currentPlayer);
             columnCount = 0;
             return true;
         }
+        return false;
         //行计数
+        /*
         uint8 lineCount = 0;
         // 向左下棋
         for (uint8 i = index + 1; i < 20; i++) {
-            if (_board[indexs][i] == _currentPlayer) {
+            if (_board[indexs][i] == currentPlayerRes) {
                 lineCount++;
             } else {
                 break;
@@ -131,14 +143,14 @@ contract MemoryToken{
         }
         // 向右下棋
         for (uint8 i = index - 1; i >= 0; i--) {
-            if (_board[indexs][i] == _currentPlayer) {
+            if (_board[indexs][i] == currentPlayerRes) {
                 lineCount++;
             } else {
                 break;
             }
         }
         if (lineCount >= 4) {
-            this.defineWinned(_currentPlayer);
+           // this.defineWinned(_currentPlayer);
             lineCount = 0;
             return true;
         }
@@ -148,7 +160,7 @@ contract MemoryToken{
         uint8 i = index + 1;
         uint8 j = indexs + 1;
         while(i < 20 && j < 20) {
-             if (_board[i][j] == _currentPlayer) {
+             if (_board[i][j] == currentPlayerRes) {
                 obliqueLeftCount++;
             } else {
                 break;
@@ -160,7 +172,7 @@ contract MemoryToken{
         i = index - 1;
         j = indexs - 1;
         while(i >= 0 && j >= 0) {
-             if (_board[j][i] == _currentPlayer) {
+             if (_board[j][i] == currentPlayerRes) {
                 obliqueLeftCount++;
             } else {
                 break;
@@ -169,7 +181,7 @@ contract MemoryToken{
             j --;
         }
         if (obliqueLeftCount >= 4) {
-            this.defineWinned(_currentPlayer);
+           // this.defineWinned(_currentPlayer);
             obliqueLeftCount = 0;
             return true;
         }
@@ -179,7 +191,7 @@ contract MemoryToken{
         i = indexs + 1;
         j = index - 1;
         while(i < 20 && j >= 0) {
-            if (_board[i][j] == _currentPlayer) {
+            if (_board[i][j] == currentPlayerRes) {
                 obliqueRightCount++;
             } else {
                 break;
@@ -190,7 +202,7 @@ contract MemoryToken{
         i = indexs- 1;
         j = index + 1;
         while(i >= 0 && j < 20) {
-            if (_board[i][j] == _currentPlayer) {
+            if (_board[i][j] == currentPlayerRes) {
                 obliqueRightCount++;
             } else {
                 break;
@@ -199,33 +211,46 @@ contract MemoryToken{
             j++;
         }
         if (obliqueRightCount >= 4) {
-            this.defineWinned(_currentPlayer);
+           // this.defineWinned(_currentPlayer);
             obliqueRightCount = 0;
             return true;
         }
         return false;
-    }
+    }*/
 
     
     // Submit a move
-    function playMove(uint8 index, uint8 indexs) public returns(bool){
+    function getIndex() public view returns(uint8 [] memory, uint8 [] memory, uint8 [] memory) {
+        return (_index, _indexs, _status);
+    }
+    function getStatus() public view returns(uint8 [] memory) {
+        return _status;
+    }
+    function getIndexs() public view returns(uint8 [] memory) {
+        return _indexs;
+    }
+    function playMove(uint8 index, uint8 indexs) public returns(bool, uint){
     // make sure correct player is submitting a move
-        require (msg.sender == _playerAddress[_currentPlayer^0x01]) ;
+        //require (msg.sender == _playerAddress[_currentPlayer^0x01]) ;
 
         // claim this square for the current player .
-        _board [index][indexs] = _currentPlayer ;
+        _index.push(index);
+        _indexs.push(indexs);
+        _status.push(_currentPlayer + 1);
+      
 
         // If the game is won , send the pot to the winner
-        if (this.checkGameOver(index, indexs)) {
-            return true;
-        }
-
+        
+        // if (this.checkGameOver(index, indexs)) {
+        //     return (true,  _board [index][indexs]);
+        //  }
         // Flip the current player
+       // _currentPlayer = _currentPlayer == 0? 1:0;
         _currentPlayer ^= 0x01 ;
 
         // start the clock for the next move
         _turnDeadline = block.number + _turnLength ;
-        return false;
+        return (false,  _currentPlayer);
     }
     function playMoveNew() public returns(string memory){
         return "Hello!%";
