@@ -3,6 +3,7 @@ import Web3 from 'web3'
 import './App.css';
 import MemoryToken from '../abis/MemoryToken.json'
 import sha256 from 'crypto-js/sha256'
+import { v4 as uuidv4 } from "uuid"
 //import { message, Button, Space } from 'antd';
 import brain from '../brain.png'
 import { PanelGroup } from 'react-bootstrap';
@@ -97,20 +98,20 @@ class App extends Component {
       this.setState({ token })
       this.initData();
       //this.updateClickArr()
-      /*const totalSupply = await token.methods.totalSupply().call().then(console.log)
+      /*const totalSupply = await token.methods.totalSupply().call().then(//console.log)
       this.setState({ totalSupply })
-      //token.methods.playMoveNew().call().then(console.log)
+      //token.methods.playMoveNew().call().then(//console.log)
       //await token.methods.setNonce1(sha256(2)).call()
       
       //await token.methods.startGame().call()
-      //await token.methods.playMoveNew().call().then(console.log)
-      console.log("wula")
+      //await token.methods.playMoveNew().call().then(//console.log)
+      //console.log("wula")
     
       // Load Tokens
       let balanceOf = await token.methods.balanceOf(accounts[0]).call()
-      //console.log(balanceOf)
+      ////console.log(balanceOf)
       for (let i = 0; i < balanceOf; i++) {
-        console.log("vvs")
+        //console.log("vvs")
         let id = await token.methods.tokenOfOwnerByIndex(accounts[0], i).call()
         let tokenURI = await token.methods.tokenURI(id).call()
         this.setState({
@@ -178,101 +179,201 @@ class App extends Component {
 
   ///////////////////////////////////////////////////////////////////
   MasterSendMoneyToContract() {
-    this.state.token.methods.startGame(1, this.state.account).send({value:3*1e18, from: this.state.account})
+    this.state.token.methods.startGame(this.state.nonce, this.state.account)
+    .send({value:3*1e18, from: this.state.account})
         .on('transactionHash', function(hash){  })
         .on('confirmation', function(confirmationNumber, receipt){  })
         .on('receipt', function(receipt){
           // receipt 相关例子
-          console.log(receipt);
+          //console.log(receipt);
       })
         .on('error', function(error, receipt) { // 如果交易被网络拒绝并带有交易收据，则第二个参数将是交易收据。
   });
   }
-  JoinGame() {
-    this.state.token.methods.joinGame(1, this.state.account).send({value:3*1e18, from: this.state.account}).
-    on('transactionHash', function(hash){  })
-    .on('confirmation', function(confirmationNumber, receipt){  })
-    .on('receipt', function(receipt){
-    console.log(receipt);
-})
-.on('error', function(error, receipt) { 
-});
+  initDataNew() {
+    this.setState({
+      isWinner:false,
+      isOver:false
+    })
   }
-  defineWinned() {
-    const name = this.state.isClick == 1 ? '黑棋胜' : '白棋胜'
-     // this.state.token.methods.defineWinned(this.state.isClick - 1).
-     //  send({ from: this.state.account }).then(console.log)
-     alert(name)
-      this.state.token.methods.defineWinned(this.state.isClick - 1).send({value:2, from: this.state.account})
-      .on('transactionHash', function(hash){  })
+  JoinGame() {
+    if(this.state.nonce != 0) {
+      alert("you have already create room, can not join")
+      return
+    }
+    this.initDataNew()
+    this.state.token.methods.GetRoom().call().then((result) => {
+      if(result[1] == true) {
+        alert("someone already join the room, you can not join")
+      }
+      if(result[0] == false) {
+        alert("there is no room, you can not join")
+      } else {
+        const id = Math.floor((Math.random()*100)+1);
+        this.state.token.methods.joinGame(id, this.state.account).send({value:3*1e18, from: this.state.account})
+        .on('transactionHash', (hash) => {
+          this.setState({nonce: id})
+          alert("join room successfully")
+          })
+        .on('confirmation', function(confirmationNumber, receipt){  })
+        .on('receipt', function(receipt){
+            //console.log(receipt);
+        })
+        .on('error', function(error, receipt) { 
+        });
+      }
+    })
+    
+  }
+  CreateRoom() {
+    this.state.token.methods.GetRoom().call().then((result) => {
+      if(result[0] == false) {
+        const id = Math.floor((Math.random()*100)+1); 
+        //console.log("id", id)
+     
+        this.state.token.methods.CreateRoom(id, this.state.account).send({from: this.state.account})
+        .on('transactionHash', (hash) => {
+        this.setState({nonce: id}) 
+        //console.log("nonce", this.state.nonce)
+        this.initDataNew()
+        alert("create room successfully") })
+        
+      } else {
+        alert("already have a room, cant create")
+      }
+    })
+    
+  }
+  DeleteRoom = () => {
+    if(this.state.isOver == false) {
+      alert("you cant delete room now")
+      return
+    } 
+    this.state.token.methods.destroyThisGame().send({from: this.state.account})
+        .on('transactionHash', (hash) => {
+        alert("Thank you to play this game! bye.") })
+  }
+  defineWinned = () => {
+    // const name = this.state.isClick == 1 ? '黑棋胜' : '白棋胜'
+    //  // this.state.token.methods.defineWinned(this.state.isClick - 1).
+    //  //  send({ from: this.state.account }).then(//console.log)
+    //  alert(name)
+     //console.log("winner1: ", this.state.isWinner)
+     this.setState({isWinner: true})
+     //console.log("winner2: ", this.state.isWinner)
+     return true;
+      /*this.state.token.methods.defineWinned(this.state.isClick - 1).send({value:2, from: this.state.account})
+      .on('transactionHash', function(hash){ 
+          this.setState({isStart: false})
+       })
        .on('confirmation', function(confirmationNumber, receipt){  })
        .on('receipt', function(receipt){
-       console.log(receipt);
+       //console.log(receipt);
    })
    .on('error', function(error, receipt) { 
-   });
+   });*/
+  
     
   }
 
   checkGameOver(index, indexs) {
       this.state.token.methods.checkGameOver(index, indexs).call().then(console.log)
   }
-  initData() {
-    this.state.token.methods.getIndex().call().then((result) => {
+  initData = () => {
+    this.state.token.methods.reserveData().call().then((result) => {
+      if(this.state.account == result[3]) {
+        this.initDataNew()
+        this.setState({
+          isMyTurn: true,
+          doubleTurn:true})
+       
+      } else if(this.state.account == result[5]) {
+        this.initDataNew()
+        this.setState({
+          isMyTurn: false,
+          doubleTurn: false})
+      } else {
+        if(result[4] == true || result[6] == true) {
+           alert("有正在进行的比赛，请等待比赛结束")
+           return
+        }
+      }
+      //console.log("local address: ", this.state.account)
+      //console.log("init first address: ", result[7])
+      
+      if(result[7] == this.state.account) {
+        //console.log("lym1")
+        this.setState({
+          isClick:1
+        })
+      } else {
+        //console.log("lym2")
+        this.setState({
+          isClick:2
+        })
+      }
+
+
       if(result[0].length != this.state.isClickArr.length - 1) {
-        console.log("init res.length", result[0].length)
-        console.log("init local length", this.state.isClickArr.length)
+        //console.log("init res.length", result[0].length)
+        //console.log("init local length", this.state.isClickArr.length)
         this.setState({isClickArr:[]})
           result[0].map((ele, index1) => {
             this.setState({
               data: this.state.data + 1,
-              isClick: this.state.data % 2 === 0 ? 1 : 2,
               isClickArr: this.state.isClickArr.concat([{
                   data: this.state.data + 1,
                   idx: result[0][index1],
                   idxs: result[1][index1],
                   isClick: result[2][index1]
-              }])
-          })
+              }]),
+              isStart:result[4]
+          }
+          )
         })
-        if(this.state.account == result[3]) {
-          this.setState({isMyTurn: true})
-        } else {
-          this.setState({isMyTurn: false})
-        }
+        
       }
      
   })
   }
-  updateClickArr() {
+  updateClickArr= ()=> {
+   
+    if(this.state.isClock == true) {
+      this.setState({clockTime: this.state.clockTime - 5})
+    }
      if(this.state.isStart == false) {
       this.state.token.methods.getStart().call().then((result) => {
         if(result == true) {
-          console.log("kaishi")
+          //console.log("kaishi")
           this.state.isStart = true;
           this.state.token.methods.getPlayer().call().then((result) => {
-            // console.log(result)
-            // console.log(this.state.account)
+            // //console.log(result)
+            // //console.log(this.state.account)
             if(result[0] == this.state.account) {
               this.state.isMyTurn = true;
-              this.setState({isClick: result[1] + 1})
             } else {
               this.state.isMyTurn = false;
-              this.setState({isClick: result[1]^1 + 1})
             }
-            console.log(this.state.isClick)
-            console.log("now turn state", this.state.isMyTurn)
+
+            if(result[2] == this.state.account) {
+              this.setState({isClick: 1})
+              alert("Game Begin!Your first move. ")
+            } else {
+              this.setState({isClick: 2})
+              alert("Game Begin!Your backhand move.")
+            }
+            //console.log(this.state.isClick)
+            //console.log("now turn state", this.state.isMyTurn)
           })
 
           if(this.state.isMyTurn == true) {
-            alert("比赛开始")
             this.state.token.methods.getIndex().call().then((result) => {
               this.setState({ isClickArr: [{
                 idx: null,
                 idxs: null,
                 isClick: null
                 }]})
-              console.log("result1", result)
+              //console.log("result1", result)
               if(result[0].length != 0) {
                 result[0].map((ele, index1) => {
                   this.setState({
@@ -285,24 +386,38 @@ class App extends Component {
                 })
               })
               }
-              console.log("end")
+              //console.log("end")
           })
-          console.log("end1")
+          //console.log("end1")
           }
         }
       })
       
      }
     if(this.state.doubleTurn == false) {
+      if(this.state.isStart == false) {
+        return
+      }
       this.state.token.methods.getPlayer().call().then((result) => {
-        // console.log("update res.length", result[0].length)
-        console.log(result)
-        // console.log("update local length", this.state.isClickArr.length)
+        // //console.log("update res.length", result[0].length)
+        //console.log(result)
+        // //console.log("update local length", this.state.isClickArr.length)
         if(result[0] == this.state.account) {
+          this.state.token.methods.getWinner().call().then((result) => {
+              if(result[0] == true) {
+                if(this.state.account != result[1]) {
+                  alert("sorry! you lose")
+                  //destroy
+                  this.setState({isOver: true})
+                }
+              }
+          })
           alert("到你了")
+          this.setState({isClockOn:true,
+                          clockTime: 20})
           this.state.token.methods.getIndex().call().then((result) => {
-            console.log("res.length", result[0].length)
-            console.log("local length", this.state.isClickArr.length)
+            //console.log("res.length", result[0].length)
+            //console.log("local length", this.state.isClickArr.length)
             this.setState({ isClickArr: [{
               idx: null,
               idxs: null,
@@ -331,7 +446,11 @@ class App extends Component {
     }
     
   }
-  handleClickNew(index, indexs) {
+  handleClickNew = (index, indexs)=> {
+    if(this.state.isOver == true) {
+      alert("比赛已经结束了")
+      return
+    }
     if(this.state.isStart == false) {
       alert("比赛还没有开始")
       return
@@ -359,16 +478,23 @@ class App extends Component {
             isClick: this.state.isClick
         }])
     }, () => {
-        console.log("index", index)
-        console.log("indexs", indexs)
-        console.log("state", this.state.isClick)
-        this.state.token.methods.playMove(index, indexs, this.state.isClick).send({from: this.state.account}).
+        //console.log("index", index)
+        //console.log("indexs", indexs)
+        //console.log("state", this.state.isClick)
+        const flagWinner = this.checkForWin(index, indexs)
+        this.state.token.methods.playMove(index, indexs, this.state.isClick, flagWinner).send({from: this.state.account}).
         on('transactionHash', (hash) => {
           this.setState({
+            isClockOn: false,
             isMyTurn: false,
             isButton: true
           })
-          this.checkForWin(index, indexs)
+          if(this.state.isWinner == true) {
+            alert("Congratulations! You win.")
+            this.setState({
+              isOver: true
+            })
+          }
          })
         .on('confirmation', function(confirmationNumber, receipt){  })
         .on('receipt', function(receipt){
@@ -380,7 +506,7 @@ class App extends Component {
         
     })
   }
-  checkForWin(index, indexs) {
+  checkForWin = (index, indexs)=>{
     const winlen = 1;
     let letArr = this.state.twoArray.map((ele, index1) => {
       let arr = Array(20).fill([])
@@ -396,9 +522,9 @@ class App extends Component {
       return arrs[indexs][index]
   })
   // (纵坐标，横坐标)[indexs][index]确定一个点的位置
-  console.log(letArr) // 按第一行、第二行...第二十行 纵坐标
-  console.log(index, 'index') // 横坐标
-  console.log(indexs, 'indexs') // 纵坐标
+  //console.log(letArr) // 按第一行、第二行...第二十行 纵坐标
+  //console.log(index, 'index') // 横坐标
+  //console.log(indexs, 'indexs') // 纵坐标
   //列计数
   let columnCount = 0;
   // 向上下棋
@@ -417,10 +543,10 @@ class App extends Component {
           break;
       }
   }
-  console.log("isClick", this.state.isClick)
-  console.log("columnCount ", columnCount)
+  //console.log("isClick", this.state.isClick)
+  //console.log("columnCount ", columnCount)
   if (columnCount >= winlen) {
-      this.defineWinned()
+      return this.defineWinned()
       columnCount = 0
       return;
   }
@@ -443,7 +569,7 @@ class App extends Component {
       }
   }
   if (lineCount >= winlen) {
-      this.defineWinned()
+      return this.defineWinned()
       lineCount = 0
       return;
   }
@@ -466,9 +592,8 @@ class App extends Component {
       }
   }
   if (obliqueLeftCount >= winlen) {
-      this.defineWinned()
       obliqueLeftCount = 0
-      return;
+      return this.defineWinned()
   }
   //斜行计数-右斜 /
   let obliqueRightCount = 0;
@@ -489,7 +614,7 @@ class App extends Component {
       }
   }
   if (obliqueRightCount >= winlen) {
-      this.defineWinned()
+      return this.defineWinned()
       obliqueRightCount = 0
       return;
   }
@@ -525,9 +650,9 @@ class App extends Component {
             return arrs[indexs][index]
         })
         // (纵坐标，横坐标)[indexs][index]确定一个点的位置
-        console.log(letArr) // 按第一行、第二行...第二十行 纵坐标
-        console.log(index, 'index') // 横坐标
-        console.log(indexs, 'indexs') // 纵坐标
+        //console.log(letArr) // 按第一行、第二行...第二十行 纵坐标
+        //console.log(index, 'index') // 横坐标
+        //console.log(indexs, 'indexs') // 纵坐标
         //列计数
         let columnCount = 0;
         // 向上下棋
@@ -615,7 +740,7 @@ class App extends Component {
                 break;
             }
         }
-        console.log(obliqueRightCount,'obliqueRightCount')
+        //console.log(obliqueRightCount,'obliqueRightCount')
         if (obliqueRightCount >= 4) {
             this.defineWinned()
             obliqueRightCount = 0
@@ -652,7 +777,12 @@ class App extends Component {
       isMyTurn: true,
       isStart: false,
       isButton: true,
-      doubleTurn: true
+      isWinner: false,
+      isOver: false,
+      doubleTurn: true,
+      nonce: 0,
+      clockTime: 0,
+      isClockOn: false
     
     }
   }
@@ -674,10 +804,11 @@ class App extends Component {
           </a>
           <button type="button" onClick={() => self.MasterSendMoneyToContract()}> start game </button>
           <button type="button" onClick={() => self.JoinGame()}> join game </button>
-          <button type="button" onClick={() => self.updateClickArr()}> update </button>
+          <button type="button" onClick={() => self.CreateRoom()}> create room </button>
+          <button type="button" onClick={() => self.DeleteRoom()}> delete room </button>
           <ul className="navbar-nav px-3">
             <li className="nav-item text-nowrap d-none d-sm-none d-sm-block">
-              <small className="text-muted"><span id="account">{this.state.account}</span></small>
+              <big className="text-muted"><span id="account">{this.state.clockTime}</span></big>
             </li>
           </ul>
         </nav>
