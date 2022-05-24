@@ -20,6 +20,9 @@ If you have questions about the environment configuration in the above three ste
 Also, the framework and logic of this project is partly based on this video, so thanks a lot to Dapp University for sharing it here!
 
 ## 3. Run
-compile constract
+compile constract  
 ```truffle migrate --reset```
+
+run Website   
+```npm run start```
 
