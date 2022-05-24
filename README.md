@@ -1,4 +1,4 @@
 
 # BlockChain Game
-##1. Introduction
+## 1. Introduction
 
