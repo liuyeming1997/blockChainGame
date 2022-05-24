@@ -97,31 +97,11 @@ class App extends Component {
       const token = await new web3.eth.Contract(abi, address)
       this.setState({ token })
       this.initData();
-      //this.updateClickArr()
-      /*const totalSupply = await token.methods.totalSupply().call().then(//console.log)
-      this.setState({ totalSupply })
-      //token.methods.playMoveNew().call().then(//console.log)
-      //await token.methods.setNonce1(sha256(2)).call()
-      
-      //await token.methods.startGame().call()
-      //await token.methods.playMoveNew().call().then(//console.log)
-      //console.log("wula")
-    
-      // Load Tokens
-      let balanceOf = await token.methods.balanceOf(accounts[0]).call()
-      ////console.log(balanceOf)
-      for (let i = 0; i < balanceOf; i++) {
-        //console.log("vvs")
-        let id = await token.methods.tokenOfOwnerByIndex(accounts[0], i).call()
-        let tokenURI = await token.methods.tokenURI(id).call()
-        this.setState({
-          tokenURIs: [...this.state.tokenURIs, tokenURI]
-        })
-      }*/
     } else {
       alert('Smart contract not deployed to detected network.')
     }
   }
+  /*
   chooseImage = (cardId) => {
     cardId = cardId.toString()
     if(this.state.cardsWon.includes(cardId)) {
@@ -175,20 +155,40 @@ class App extends Component {
     if (this.state.cardsWon.length === CARD_ARRAY.length) {
       alert('Congratulations! You found them all!')
     }
-  }
+  }*/
 
   ///////////////////////////////////////////////////////////////////
-  MasterSendMoneyToContract() {
-    this.state.token.methods.startGame(this.state.nonce, this.state.account)
-    .send({value:3*1e18, from: this.state.account})
-        .on('transactionHash', function(hash){  })
-        .on('confirmation', function(confirmationNumber, receipt){  })
-        .on('receipt', function(receipt){
-          // receipt 相关例子
-          //console.log(receipt);
-      })
-        .on('error', function(error, receipt) { // 如果交易被网络拒绝并带有交易收据，则第二个参数将是交易收据。
-  });
+  StartGame() {
+    this.state.token.methods.GetRoom().call().then((result) => {
+      if(result[3] == true) {
+        alert("Game already begin! you can not start game again")
+        return
+      }
+      if(result[0] == false) {
+        alert("there is no room, you can not start game")
+        return
+      }
+      if(result[2] != this.state.account) {
+        alert("you are not the room creator. You can not start this game")
+        return;
+      }
+      if(result[1] == false) {
+        alert("nobody join the room, you can not start game")
+        return
+      }
+      console.log("this nonce", this.state.nonce)
+      this.state.token.methods.startGame(this.state.nonce, this.state.account)
+      .send({value:3*1e18, from: this.state.account})
+          .on('transactionHash', function(hash){  })
+          .on('confirmation', function(confirmationNumber, receipt){  })
+          .on('receipt', function(receipt){
+        })
+          .on('error', function(error, receipt) { 
+    });
+        
+      
+    })
+    
   }
   initDataNew() {
     this.setState({
@@ -197,14 +197,15 @@ class App extends Component {
     })
   }
   JoinGame() {
-    if(this.state.nonce != 0) {
-      alert("you have already create room, can not join")
-      return
-    }
     this.initDataNew()
     this.state.token.methods.GetRoom().call().then((result) => {
       if(result[1] == true) {
         alert("someone already join the room, you can not join")
+        return
+      }
+      if(result[2] == this.state.account) {
+        alert("you have already create room, can not join")
+        return
       }
       if(result[0] == false) {
         alert("there is no room, you can not join")
@@ -213,6 +214,7 @@ class App extends Component {
         this.state.token.methods.joinGame(id, this.state.account).send({value:3*1e18, from: this.state.account})
         .on('transactionHash', (hash) => {
           this.setState({nonce: id})
+          console.log("p2nonce: ", id)
           alert("join room successfully")
           })
         .on('confirmation', function(confirmationNumber, receipt){  })
@@ -234,19 +236,20 @@ class App extends Component {
         this.state.token.methods.CreateRoom(id, this.state.account).send({from: this.state.account})
         .on('transactionHash', (hash) => {
         this.setState({nonce: id}) 
+        console.log("p1nonce: ", id)
         //console.log("nonce", this.state.nonce)
         this.initDataNew()
         alert("create room successfully") })
         
       } else {
-        alert("already have a room, cant create")
+        alert("already have a room, can not create")
       }
     })
     
   }
   DeleteRoom = () => {
     if(this.state.isOver == false) {
-      alert("you cant delete room now")
+      alert("you can not delete room now")
       return
     } 
     this.state.token.methods.destroyThisGame().send({from: this.state.account})
@@ -281,20 +284,23 @@ class App extends Component {
   }
   initData = () => {
     this.state.token.methods.reserveData().call().then((result) => {
+      console.log(result[8], result[9])
       if(this.state.account == result[3]) {
         this.initDataNew()
         this.setState({
           isMyTurn: true,
-          doubleTurn:true})
+          doubleTurn:true,
+          nonce: result[9]})
        
       } else if(this.state.account == result[5]) {
         this.initDataNew()
         this.setState({
           isMyTurn: false,
-          doubleTurn: false})
+          doubleTurn: false,
+          nonce: result[8]})
       } else {
         if(result[4] == true || result[6] == true) {
-           alert("有正在进行的比赛，请等待比赛结束")
+           alert("There are ongoing competitions, please wait for the end of the competition")
            return
         }
       }
@@ -412,7 +418,7 @@ class App extends Component {
                 }
               }
           })
-          alert("到你了")
+          alert("It's your turn.")
           this.setState({isClockOn:true,
                           clockTime: 20})
           this.state.token.methods.getIndex().call().then((result) => {
@@ -448,26 +454,28 @@ class App extends Component {
   }
   handleClickNew = (index, indexs)=> {
     if(this.state.isOver == true) {
-      alert("比赛已经结束了")
+      alert("The competition is over")
       return
     }
     if(this.state.isStart == false) {
-      alert("比赛还没有开始")
+      alert("The game hasn't even started yet.")
       return
    }
    if(this.state.isMyTurn == false) {
-    alert("这不是你的回合")
+    alert("This is not your turn")
     return
     }
     if(this.state.isButton == false) {
-      alert("你必须处理完这次交易")
+      alert("You must finish processing this transaction")
       return
     }
-    this.state.isButton = false;
     let state = this.state.isClickArr.findIndex((n) => n.idx == index && n.idxs == indexs)
     if (state != -1) {
+        alert("There is already a piece in this position, please replay this move")
         return
     }
+
+    this.state.isButton = false;
     this.setState({
         idx: index,
         idxs: indexs,
@@ -619,6 +627,7 @@ class App extends Component {
       return;
   }
   }
+  /*
   handleClick(index, indexs) {
     let state = this.state.isClickArr.findIndex((n) => n.idx == index && n.idxs == indexs)
     if (state != -1) {
@@ -747,7 +756,7 @@ class App extends Component {
             return;
         }
     })
-}
+} */
 
   constructor(props) {
     super(props)
@@ -802,13 +811,13 @@ class App extends Component {
           >
           &nbsp; GoBang
           </a>
-          <button type="button" onClick={() => self.MasterSendMoneyToContract()}> start game </button>
+          <button type="button" onClick={() => self.StartGame()}> start game </button>
           <button type="button" onClick={() => self.JoinGame()}> join game </button>
           <button type="button" onClick={() => self.CreateRoom()}> create room </button>
           <button type="button" onClick={() => self.DeleteRoom()}> delete room </button>
           <ul className="navbar-nav px-3">
             <li className="nav-item text-nowrap d-none d-sm-none d-sm-block">
-              <big className="text-muted"><span id="account">{this.state.clockTime}</span></big>
+              <big className="text-muted"><span id="account">{this.state.account}</span></big>
             </li>
           </ul>
         </nav>
@@ -837,75 +846,6 @@ class App extends Component {
                     })
                 }
             </div>
-            
-    
-      /*
-      <div>
-        <nav className="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
-          <a
-            className="navbar-brand col-sm-3 col-md-2 mr-0"
-            href="http://www.dappuniversity.com/bootcamp"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-          <img src={brain} width="30" height="30" className="d-inline-block align-top" alt="" />
-          &nbsp; Memory Tokens
-          </a>
-          <ul className="navbar-nav px-3">
-            <li className="nav-item text-nowrap d-none d-sm-none d-sm-block">
-              <small className="text-muted"><span id="account">{this.state.account}</span></small>
-            </li>
-          </ul>
-        </nav>
-        <div className="container-fluid mt-5">
-          <div className="row">
-            <main role="main" className="col-lg-12 d-flex text-center">
-              <div className="content mr-auto ml-auto">
-                <h1 className="d-4">haha</h1>
-
-                <div className="grid mb-4" >
-
-                { this.state.cardArray.map((card, key) => {
-                    return(
-                      <img
-                        key={key}
-                        src={this.chooseImage(key)}
-                        data-id={key}
-                        onClick={(event) => {
-                          let cardId = event.target.getAttribute('data-id')
-                          if(!this.state.cardsWon.includes(cardId.toString())) {
-                            this.flipCard(cardId)
-                          }
-                        }}
-                      />
-                    )
-                  })}
-
-                </div>
-
-                <div>
-                  <h5>Tokens Collected:<span id="result">&nbsp;{this.state.tokenURIs.length}</span></h5>
-                  <div className="grid mb-4" >
-
-                  { this.state.tokenURIs.map((tokenURI, key) => {
-                      return(
-                        <img
-                          key={key}
-                          src={tokenURI}
-                        />
-                      )
-                    })}
-
-                  </div>
-
-                </div>
-
-              </div>
-
-            </main>
-          </div>
-        </div>
-      </div>*/
     );
   }
 }

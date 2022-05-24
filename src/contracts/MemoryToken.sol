@@ -22,6 +22,7 @@ contract MemoryToken{
     uint8 [] _index = new uint8[](0);
     uint8 [] _indexs = new uint8[](0);
     uint8 [] _status = new uint8[](0);
+    uint8 [25][25] _board;
     //uint8 [20][20] _board;
     uint8 _currentPlayer;
     address payable winnerAddress;
@@ -61,6 +62,8 @@ contract MemoryToken{
         matchNum = 0;
         _currentPlayer = 1;
         cnt = 0;
+        _p1Commitment = 0;
+        _p2Nonce = 0;
         _firstPlayer = 0;
         playLock = false;
         isJoin = false;
@@ -74,8 +77,8 @@ contract MemoryToken{
             result := mload(add(source,32))
         }
     }
-    function GetRoom() public returns(bool, bool) {
-        return (isRoomCreate, isJoin);
+    function GetRoom() public returns(bool, bool, address, bool) {
+        return (isRoomCreate, isJoin, _playerAddress[0], isStart);
     }
     function CreateRoom(uint8 p1Nonce, address payable player1) public payable {
         if(isRoomCreate == false) {
@@ -116,6 +119,7 @@ contract MemoryToken{
         //require(isOver == false);
         require(_playerAddress[1] != address(0));
         require(_playerAddress[0] == msg.sender);
+        require(isStart == false);
         //bytes32 id = sha256(abi.encodePacked(p1Nonce));
         require (_p1Commitment == p1Nonce);
         _currentPlayer = (p1Nonce ^ _p2Nonce) & 0x01 ;
@@ -130,6 +134,7 @@ contract MemoryToken{
         //safeTransferFrom(address(this), _playerAddress[winner], matchNum);
         return (address(this), address(this).balance, msg.sender, address(msg.sender).balance);
     }
+    /*
     function defineWinned(uint8 winner) public payable returns(address,uint,address,uint) {
         //mint(_playerAddress[winner], "1");
         //safeTransferFrom(address(this), _playerAddress[winner], matchNum);
@@ -139,9 +144,10 @@ contract MemoryToken{
         isOver = true;
         
         return (address(this), address(this).balance / 1e18, msg.sender, address(msg.sender).balance/ 1e18);
-    }
+    }*/
     
     function destroyThisGame() public {
+        require(isOver == true);
         if(msg.sender == _playerAddress[0]) {
             isPlayer0WantDes = true;
         } else if(msg.sender == _playerAddress[1]) {
@@ -150,6 +156,8 @@ contract MemoryToken{
             revert();
         }
         if(isPlayer0WantDes == true && isPlayer1WantDes == true) {
+            _p1Commitment = 0;
+            _p2Nonce = 0;
             winnerAddress = address(0);
             _playerAddress[0] = address(0);
             _playerAddress[1] = address(0);
@@ -174,11 +182,20 @@ contract MemoryToken{
         }
         
     }
-    /*
-    function checkGameOver(uint8 index, uint8 indexs) public returns(bool) {
-        uint currentPlayerRes = _currentPlayer + 1;
+
+    function checkGameOver(uint8 index, uint8 indexs, uint8 status) public returns(bool) {
+        uint currentPlayerRes = status;
         uint8 columnCount = 0;
-        
+        uint8 winlen = 1;
+        //uint8[21][21] _board = new uint8[21][21](0);
+        for(uint i = 0; i < 21; i ++) {
+            for(uint j = 0; j < 21; j ++) {
+                _board[i][j] = 0;
+            }
+        }
+        for(uint i = 0; i < _index.length; i ++) {
+            _board[_index[i]][_indexs[i]] = status;
+        }
         for (uint8 i = indexs + 1; i < 20; i++) {
             if (_board[i][index] == currentPlayerRes) {
                 columnCount++;
@@ -196,14 +213,13 @@ contract MemoryToken{
         
         // 向下下棋
         
-        if (columnCount >= 4) {
+        if (columnCount >= winlen) {
            // this.defineWinned(_currentPlayer);
             columnCount = 0;
             return true;
         }
-        return false;
         //行计数
-        /*
+        
         uint8 lineCount = 0;
         // 向左下棋
         for (uint8 i = index + 1; i < 20; i++) {
@@ -221,7 +237,7 @@ contract MemoryToken{
                 break;
             }
         }
-        if (lineCount >= 4) {
+        if (lineCount >= winlen) {
            // this.defineWinned(_currentPlayer);
             lineCount = 0;
             return true;
@@ -252,7 +268,7 @@ contract MemoryToken{
             i --;
             j --;
         }
-        if (obliqueLeftCount >= 4) {
+        if (obliqueLeftCount >= winlen) {
            // this.defineWinned(_currentPlayer);
             obliqueLeftCount = 0;
             return true;
@@ -282,14 +298,14 @@ contract MemoryToken{
             i--;
             j++;
         }
-        if (obliqueRightCount >= 4) {
+        if (obliqueRightCount >= winlen) {
            // this.defineWinned(_currentPlayer);
             obliqueRightCount = 0;
             return true;
         }
         return false;
-    }*/
-
+    }
+  
     function getBalance() public returns(uint) {
         return address(this).balance;
     }
@@ -297,10 +313,10 @@ contract MemoryToken{
         return (isOver, winnerAddress);
     }
     function reserveData() public view returns(uint8 [] memory, uint8 [] memory, uint8 [] memory
-    , address, bool, address, bool, address) {
+    , address, bool, address, bool, address, uint8, uint8) {
         require(playLock == false);
         return (_index, _indexs, _status, _playerAddress[_currentPlayer],isStart,
-         _playerAddress[_currentPlayer^0x01], isJoin, _playerAddress[_firstPlayer]);
+         _playerAddress[_currentPlayer^0x01], isJoin, _playerAddress[_firstPlayer],_p1Commitment, _p2Nonce);
     }
     // Submit a move
     function getIndex() public view returns(uint8 [] memory, uint8 [] memory, uint8 [] memory, address) {
@@ -317,7 +333,7 @@ contract MemoryToken{
     
     function playMove(uint8 index, uint8 indexs, uint8 status, bool isWinner) public payable returns(bool, uint){
     // make sure correct player is submitting a move
-        //require (msg.sender == _playerAddress[_currentPlayer^0x01]) ;
+        require (msg.sender == _playerAddress[_currentPlayer]);
 
         // claim this square for the current player .
         require(playLock == false);
@@ -325,7 +341,6 @@ contract MemoryToken{
         if(isWinner == true) {
             require(address(this).balance >= _bonus);
             address(msg.sender).transfer(_bonus);
-            isMatch = false;
             isOver = true;
         }
         _index.push(index);
@@ -349,11 +364,11 @@ contract MemoryToken{
         return "Hello!%";
     }
 
-    // Default the game if a player takes too long to submit a move
-    function defaultGame () public {
-        if (block.number + _turnLength > _turnDeadline)
-            defineWinned(_currentPlayer^0x01);
-    }
+    // // Default the game if a player takes too long to submit a move
+    // function defaultGame () public {
+    //     if (block.number + _turnLength > _turnDeadline)
+    //         //defineWinned(_currentPlayer^0x01);
+    // }
 
     
 
