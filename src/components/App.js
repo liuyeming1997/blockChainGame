@@ -304,6 +304,8 @@ class App extends Component {
            return
         }
       }
+      console.log("isOver", result[10])
+      this.setState({isOver: result[10]})
       //console.log("local address: ", this.state.account)
       //console.log("init first address: ", result[7])
       
@@ -343,7 +345,9 @@ class App extends Component {
   })
   }
   updateClickArr= ()=> {
-   
+   if(this.state.isOver == true) {
+     return
+   }
     if(this.state.isClock == true) {
       this.setState({clockTime: this.state.clockTime - 5})
     }
@@ -409,15 +413,6 @@ class App extends Component {
         //console.log(result)
         // //console.log("update local length", this.state.isClickArr.length)
         if(result[0] == this.state.account) {
-          this.state.token.methods.getWinner().call().then((result) => {
-              if(result[0] == true) {
-                if(this.state.account != result[1]) {
-                  alert("sorry! you lose")
-                  //destroy
-                  this.setState({isOver: true})
-                }
-              }
-          })
           alert("It's your turn.")
           this.setState({isClockOn:true,
                           clockTime: 20})
@@ -440,6 +435,16 @@ class App extends Component {
             })
           })
          
+      })
+      this.state.token.methods.getWinner().call().then((result) => {
+        if(result[0] == true) {
+          if(this.state.account != result[1]) {
+            alert("sorry! you lose")
+            //destroy
+            this.setState({isOver: true})
+            return
+          }
+        }
       })
       this.state.isMyTurn = true;
       this.state.doubleTurn = true;

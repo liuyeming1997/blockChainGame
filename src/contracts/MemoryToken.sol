@@ -313,10 +313,11 @@ contract MemoryToken{
         return (isOver, winnerAddress);
     }
     function reserveData() public view returns(uint8 [] memory, uint8 [] memory, uint8 [] memory
-    , address, bool, address, bool, address, uint8, uint8) {
+    , address, bool, address, bool, address, uint8, uint8, bool) {
         require(playLock == false);
         return (_index, _indexs, _status, _playerAddress[_currentPlayer],isStart,
-         _playerAddress[_currentPlayer^0x01], isJoin, _playerAddress[_firstPlayer],_p1Commitment, _p2Nonce);
+         _playerAddress[_currentPlayer^0x01], isJoin, _playerAddress[_firstPlayer],
+         _p1Commitment, _p2Nonce,isOver);
     }
     // Submit a move
     function getIndex() public view returns(uint8 [] memory, uint8 [] memory, uint8 [] memory, address) {
