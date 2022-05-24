@@ -26,3 +26,9 @@ compile constract
 run Website   
 ```npm run start```
 
+
+Now you can visit the address localhost:3000 to start playing the game!
+
+(this url might be a play video)
+
+
