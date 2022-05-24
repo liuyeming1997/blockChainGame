@@ -5,7 +5,7 @@ This project implements a game in a smart-contract and a web3 interface to play 
 
 ## 2. Building
 This project requires:
-node.js: v16.15.0
+node.js: v16.15.0 <\br>
 npm: 8.5.5
 truffle: v5.5.11
 
