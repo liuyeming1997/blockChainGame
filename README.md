@@ -18,7 +18,7 @@ steps:
 After you have configured your environment, you need to match the metamask and ganache test environments and select two addresses as the two sides of this matchup.
 
 If you have questions about the environment configuration in the above three steps, you can refer to https://www.youtube.com/watch?v=x-6ruqmNS3o. The first six minutes of this video is the environment configuration, which is exactly the same as this project.  
-Also, the framework and logic of this project is partly based on this video, so thanks a lot to Dapp University for sharing it here!
+Also, the framework and logic of this project is partly based on this video, so thanks a lot to Dapp University for sharing!
 
 ## 3. Run
 compile constract  
