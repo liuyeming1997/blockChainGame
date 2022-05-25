@@ -1,7 +1,8 @@
 
 # BlockChain Game
 ## 1. Introduction
-This project implements a **GoBang** game in a smart-contract and a web3 interface to play it. 
+This project implements a **GoBang** game in a smart-contract and a web3 interface to play it.  
+You can also see https://www.youtube.com/watch?v=k4xFePNKYrE. This video also introduce this project.  
 
 ## 2. Building
 This project requires:  
