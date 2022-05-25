@@ -197,7 +197,6 @@ class App extends Component {
     })
   }
   JoinGame() {
-    this.initDataNew()
     this.state.token.methods.GetRoom().call().then((result) => {
       if(result[1] == true) {
         alert("someone already join the room, you can not join")
@@ -210,6 +209,7 @@ class App extends Component {
       if(result[0] == false) {
         alert("there is no room, you can not join")
       } else {
+        this.initDataNew()
         const id = Math.floor((Math.random()*100)+1);
         this.state.token.methods.joinGame(id, this.state.account).send({value:3*1e18, from: this.state.account})
         .on('transactionHash', (hash) => {
@@ -236,9 +236,9 @@ class App extends Component {
         this.state.token.methods.CreateRoom(id, this.state.account).send({from: this.state.account})
         .on('transactionHash', (hash) => {
         this.setState({nonce: id}) 
+        this.initDataNew()
         console.log("p1nonce: ", id)
         //console.log("nonce", this.state.nonce)
-        this.initDataNew()
         alert("create room successfully") })
         
       } else {
@@ -255,6 +255,11 @@ class App extends Component {
     this.state.token.methods.destroyThisGame().send({from: this.state.account})
         .on('transactionHash', (hash) => {
         alert("Thank you to play this game! bye.") })
+  }
+  getTmp = () => {
+    this.state.token.methods.getTmp().call().then((result) => {
+      console.log(result)
+    })
   }
   defineWinned = () => {
     // const name = this.state.isClick == 1 ? '黑棋胜' : '白棋胜'
@@ -520,7 +525,7 @@ class App extends Component {
     })
   }
   checkForWin = (index, indexs)=>{
-    const winlen = 1;
+    const winlen = 4;
     let letArr = this.state.twoArray.map((ele, index1) => {
       let arr = Array(20).fill([])
       let arrr=arr.map((item,row) => {
@@ -541,6 +546,15 @@ class App extends Component {
   //列计数
   let columnCount = 0;
   // 向上下棋
+  console.log(letArr)
+  console.log("test:", letArr[17][1])
+  console.log(index, indexs)
+  //////////////////////////////////////////////
+
+
+  
+  //////////////////////////////////////////////////
+  ////////////////////////////////////////////////////
   for (let i = indexs + 1; i < 20; i++) {
       if (letArr[i][index].isClick == this.state.isClick) {
           columnCount++;
@@ -558,6 +572,7 @@ class App extends Component {
   }
   //console.log("isClick", this.state.isClick)
   //console.log("columnCount ", columnCount)
+  console.log("columnCount", columnCount)
   if (columnCount >= winlen) {
       return this.defineWinned()
       columnCount = 0
@@ -581,6 +596,7 @@ class App extends Component {
           break;
       }
   }
+  console.log("lineCount", lineCount)
   if (lineCount >= winlen) {
       return this.defineWinned()
       lineCount = 0
@@ -590,7 +606,7 @@ class App extends Component {
   let obliqueLeftCount = 0;
   // 向左上下棋↖
   for (let i = index + 1, j = indexs + 1; i < 20 && j < 20; i++,j++) {
-      if (letArr[i][j].isClick == this.state.isClick) {
+      if (letArr[j][i].isClick == this.state.isClick) {
           obliqueLeftCount++;
       } else {
           break;
@@ -604,6 +620,7 @@ class App extends Component {
           break;
       }
   }
+  console.log("obliqueLeftCount", obliqueLeftCount)
   if (obliqueLeftCount >= winlen) {
       obliqueLeftCount = 0
       return this.defineWinned()
@@ -626,6 +643,7 @@ class App extends Component {
           break;
       }
   }
+  console.log("obliqueRightCount", obliqueRightCount)
   if (obliqueRightCount >= winlen) {
       return this.defineWinned()
       obliqueRightCount = 0
@@ -820,6 +838,7 @@ class App extends Component {
           <button type="button" onClick={() => self.JoinGame()}> join game </button>
           <button type="button" onClick={() => self.CreateRoom()}> create room </button>
           <button type="button" onClick={() => self.DeleteRoom()}> delete room </button>
+          <button type="button" onClick={() => self.getTmp()}>  test </button>
           <ul className="navbar-nav px-3">
             <li className="nav-item text-nowrap d-none d-sm-none d-sm-block">
               <big className="text-muted"><span id="account">{this.state.account}</span></big>

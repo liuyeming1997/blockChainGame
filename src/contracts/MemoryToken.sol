@@ -40,6 +40,11 @@ contract MemoryToken{
     bool isPlayer1WantDes;
     bool playLock;
     bool isRoomCreate;
+
+    uint8 tmp1;
+    uint8 tmp2;
+    uint8 tmp3;
+    uint8 tmp4;
     /*
     function mint(address _to, string memory _tokenURI) public returns(bool) {
        //require(_to != address(0));
@@ -70,6 +75,15 @@ contract MemoryToken{
         isRoomCreate = false;
         isPlayer0WantDes = false;
         isPlayer1WantDes = false;
+        for(uint i = 0; i < 21; i ++) {
+            for(uint j = 0; j < 21; j ++) {
+                _board[i][j] = 0;
+            }
+        }
+        tmp1 = 0;
+        tmp2 = 0;
+        tmp3 = 0;
+        tmp4 = 0;
 
     }
     function stringToBytes32(string memory source) internal returns(bytes32 result){
@@ -119,7 +133,7 @@ contract MemoryToken{
         //require(isOver == false);
         require(_playerAddress[1] != address(0));
         require(_playerAddress[0] == msg.sender);
-        require(isStart == false);
+        require(msg.value == _fee);
         //bytes32 id = sha256(abi.encodePacked(p1Nonce));
         require (_p1Commitment == p1Nonce);
         _currentPlayer = (p1Nonce ^ _p2Nonce) & 0x01 ;
@@ -179,23 +193,21 @@ contract MemoryToken{
             delete _index;
             delete _indexs;
             delete _status;
+            for(uint i = 0; i < 21; i ++) {
+                for(uint j = 0; j < 21; j ++) {
+                    _board[i][j] = 0;
+                }
+        }
         }
         
     }
 
     function checkGameOver(uint8 index, uint8 indexs, uint8 status) public returns(bool) {
-        uint currentPlayerRes = status;
+        uint8 currentPlayerRes = status;
         uint8 columnCount = 0;
-        uint8 winlen = 1;
+        uint8 winlen = 2;
         //uint8[21][21] _board = new uint8[21][21](0);
-        for(uint i = 0; i < 21; i ++) {
-            for(uint j = 0; j < 21; j ++) {
-                _board[i][j] = 0;
-            }
-        }
-        for(uint i = 0; i < _index.length; i ++) {
-            _board[_index[i]][_indexs[i]] = status;
-        }
+        
         for (uint8 i = indexs + 1; i < 20; i++) {
             if (_board[i][index] == currentPlayerRes) {
                 columnCount++;
@@ -212,7 +224,7 @@ contract MemoryToken{
         }
         
         // 向下下棋
-        
+        tmp1 = columnCount;
         if (columnCount >= winlen) {
            // this.defineWinned(_currentPlayer);
             columnCount = 0;
@@ -237,6 +249,7 @@ contract MemoryToken{
                 break;
             }
         }
+        tmp2 = lineCount;
         if (lineCount >= winlen) {
            // this.defineWinned(_currentPlayer);
             lineCount = 0;
@@ -245,8 +258,8 @@ contract MemoryToken{
         //斜行计数-左斜 \
         uint8 obliqueLeftCount = 0;
         // 向左上下棋↖
-        uint8 i = index + 1;
-        uint8 j = indexs + 1;
+        uint8 i = indexs + 1;
+        uint8 j = index + 1;
         while(i < 20 && j < 20) {
              if (_board[i][j] == currentPlayerRes) {
                 obliqueLeftCount++;
@@ -257,10 +270,10 @@ contract MemoryToken{
             j ++;
         }
         // 向左下下棋↘
-        i = index - 1;
-        j = indexs - 1;
+        i = indexs - 1;
+        j = index - 1;
         while(i >= 0 && j >= 0) {
-             if (_board[j][i] == currentPlayerRes) {
+             if (_board[i][j] == currentPlayerRes) {
                 obliqueLeftCount++;
             } else {
                 break;
@@ -268,6 +281,7 @@ contract MemoryToken{
             i --;
             j --;
         }
+        tmp3 = obliqueLeftCount;
         if (obliqueLeftCount >= winlen) {
            // this.defineWinned(_currentPlayer);
             obliqueLeftCount = 0;
@@ -284,8 +298,8 @@ contract MemoryToken{
             } else {
                 break;
             }
-            i++;
-            j--;
+            i = i + 1;
+            j = j - 1;
         }
         i = indexs- 1;
         j = index + 1;
@@ -298,6 +312,7 @@ contract MemoryToken{
             i--;
             j++;
         }
+        tmp4 = obliqueRightCount;
         if (obliqueRightCount >= winlen) {
            // this.defineWinned(_currentPlayer);
             obliqueRightCount = 0;
@@ -305,7 +320,10 @@ contract MemoryToken{
         }
         return false;
     }
-  
+    
+    function getTmp() public view returns(uint8, uint8, uint8, uint8, uint8 [25][25] memory) {
+        return (tmp1, tmp2, tmp3, tmp4, _board);
+    }
     function getBalance() public returns(uint) {
         return address(this).balance;
     }
@@ -339,11 +357,17 @@ contract MemoryToken{
         // claim this square for the current player .
         require(playLock == false);
         playLock = true;
+        //checkGameOver(index, indexs, status);
         if(isWinner == true) {
-            require(address(this).balance >= _bonus);
-            address(msg.sender).transfer(_bonus);
-            isOver = true;
+            //if(checkGameOver(index, indexs, status)) {
+                require(address(this).balance >= _bonus);
+                address(msg.sender).transfer(_bonus);
+                isOver = true;
+            //} else {
+            //     revert();
+            //}
         }
+        _board[indexs][index] = status;
         _index.push(index);
         _indexs.push(indexs);
         _status.push(status);
