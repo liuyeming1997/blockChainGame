@@ -412,13 +412,7 @@ class App extends Component {
       arrs[indexs][index] = arrr
       return arrs[indexs][index]
   })
-  // (纵坐标，横坐标)[indexs][index]确定一个点的位置
-  //console.log(letArr) // 按第一行、第二行...第二十行 纵坐标
-  //console.log(index, 'index') // 横坐标
-  //console.log(indexs, 'indexs') // 纵坐标
-  //列计数
   let columnCount = 0;
-  // 向上下棋
   console.log(letArr)
   console.log("test:", letArr[17][1])
   console.log(index, indexs)
@@ -435,7 +429,6 @@ class App extends Component {
           break;
       }
   }
-  // 向下下棋
   for (let i = indexs - 1; i >= 0; i--) {
       if (letArr[i][index].isClick == this.state.isClick) {
           columnCount++;
@@ -451,9 +444,7 @@ class App extends Component {
       columnCount = 0
       return;
   }
-  //行计数
   let lineCount = 0;
-  // 向左下棋
   for (let i = index + 1; i < 20; i++) {
       if (letArr[indexs][i].isClick == this.state.isClick) {
           lineCount++;
@@ -461,7 +452,6 @@ class App extends Component {
           break;
       }
   }
-  // 向右下棋
   for (let i = index - 1; i >= 0; i--) {
       if (letArr[indexs][i].isClick == this.state.isClick) {
           lineCount++;
@@ -475,9 +465,7 @@ class App extends Component {
       lineCount = 0
       return;
   }
-  //斜行计数-左斜 \
   let obliqueLeftCount = 0;
-  // 向左上下棋↖
   for (let i = index + 1, j = indexs + 1; i < 20 && j < 20; i++,j++) {
       if (letArr[j][i].isClick == this.state.isClick) {
           obliqueLeftCount++;
@@ -485,7 +473,6 @@ class App extends Component {
           break;
       }
   }
-  // 向左下下棋↘
   for (let i = index - 1, j = indexs - 1; i >= 0 && j >= 0; i--,j--) {
       if (letArr[j][i].isClick == this.state.isClick) {
           obliqueLeftCount++;
@@ -498,9 +485,7 @@ class App extends Component {
       obliqueLeftCount = 0
       return this.defineWinned()
   }
-  //斜行计数-右斜 /
   let obliqueRightCount = 0;
-  // 向右上下棋↗
   for (let i = indexs + 1, j = index - 1; i < 20 && j >= 0; i++,j--) {
       if (letArr[i][j].isClick == this.state.isClick) {
           obliqueRightCount++;
@@ -508,7 +493,6 @@ class App extends Component {
           break;
       }
   }
-  // 向左右下下棋↙
   for (let i = indexs- 1, j = index + 1; i >= 0 && j < 20; i--,j++) {
       if (letArr[i][j].isClick == this.state.isClick) {
           obliqueRightCount++;
@@ -579,7 +563,6 @@ class App extends Component {
           <button type="button" onClick={() => self.JoinGame()}> join game </button>
           <button type="button" onClick={() => self.CreateRoom()}> create room </button>
           <button type="button" onClick={() => self.DeleteRoom()}> delete room </button>
-          <button type="button" onClick={() => self.getTmp()}>  test </button>
           <ul className="navbar-nav px-3">
             <li className="nav-item text-nowrap d-none d-sm-none d-sm-block">
               <big className="text-muted"><span id="account">{this.state.account}</span></big>

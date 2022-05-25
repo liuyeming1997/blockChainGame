@@ -3,16 +3,6 @@ pragma solidity ^0.5.0;
 import "./ERC721Full.sol";
 
 contract MemoryToken{
-    // constructor() ERC721Full("Memory Token", "MEMORY") public {
-    // }
-    // //_tokenURI is png url
-
-    // function mint(address _to, string memory _tokenURI) public returns(bool) {
-    //    uint _tokenId = totalSupply().add(1);
-    //    _mint(_to, _tokenId);
-    //    _setTokenURI(_tokenId, _tokenURI);
-    //    return true;
-    // }
     uint public initialBalance = 100 ether;
     address payable[2]  _playerAddress;
     uint8 _firstPlayer;
@@ -23,7 +13,6 @@ contract MemoryToken{
     uint8 [] _indexs = new uint8[](0);
     uint8 [] _status = new uint8[](0);
     uint8 [25][25] _board;
-    //uint8 [20][20] _board;
     uint8 _currentPlayer;
     address payable winnerAddress;
     uint256 _turnDeadline;
@@ -45,14 +34,7 @@ contract MemoryToken{
     uint8 tmp2;
     uint8 tmp3;
     uint8 tmp4;
-    /*
-    function mint(address _to, string memory _tokenURI) public returns(bool) {
-       //require(_to != address(0));
-       uint _tokenId = totalSupply().add(1);
-       _mint(_to, _tokenId);
-       _setTokenURI(_tokenId, _tokenURI);
-       return true;
-    }*/
+ 
 
     constructor ()  public {
         winnerAddress = address(0);
@@ -75,11 +57,6 @@ contract MemoryToken{
         isRoomCreate = false;
         isPlayer0WantDes = false;
         isPlayer1WantDes = false;
-        for(uint i = 0; i < 21; i ++) {
-            for(uint j = 0; j < 21; j ++) {
-                _board[i][j] = 0;
-            }
-        }
         tmp1 = 0;
         tmp2 = 0;
         tmp3 = 0;
@@ -111,7 +88,6 @@ contract MemoryToken{
         require(isJoin == false);
         require(isOver == false);
         require(msg.value == _fee);
-        //require(isMatch == false);
         if(isMatch == false){
             isMatch = true;
         } else {
@@ -123,42 +99,19 @@ contract MemoryToken{
 
     }
     
-    // function getMyWant1(uint tmmp) public returns(bytes32, string memory) {
-    //     bytes32 id = sha256(abi.encodePacked(tmmp));
-    //     return(id, _p1Commitment);
-    // }
-    // Revealing player 1’s nonce to choose who goes first .
-    //function startGame (uint8 p1Nonce, bytes32 p1Commitment) public payable{
     function startGame (uint8 p1Nonce, address payable player1) public payable{
         //require(isOver == false);
         require(_playerAddress[1] != address(0));
         require(_playerAddress[0] == msg.sender);
         require(msg.value == _fee);
-        //bytes32 id = sha256(abi.encodePacked(p1Nonce));
         require (_p1Commitment == p1Nonce);
         _currentPlayer = (p1Nonce ^ _p2Nonce) & 0x01 ;
-        //_currentPlayer = 1;
         _firstPlayer = _currentPlayer;
         isStart = true;
-        //_currentPlayer = 0;
-        //_turnDeadline = block.number + _turnLength ;
     }
     function SendMoneyToContract() public payable returns(address,uint,address,uint) {
-        //mint(_playerAddress[winner], "1");
-        //safeTransferFrom(address(this), _playerAddress[winner], matchNum);
         return (address(this), address(this).balance, msg.sender, address(msg.sender).balance);
     }
-    /*
-    function defineWinned(uint8 winner) public payable returns(address,uint,address,uint) {
-        //mint(_playerAddress[winner], "1");
-        //safeTransferFrom(address(this), _playerAddress[winner], matchNum);
-        require(address(this).balance >= _bonus);
-        address(msg.sender).transfer(_bonus);
-        isMatch = false;
-        isOver = true;
-        
-        return (address(this), address(this).balance / 1e18, msg.sender, address(msg.sender).balance/ 1e18);
-    }*/
     
     function destroyThisGame() public {
         require(isOver == true);
@@ -193,133 +146,10 @@ contract MemoryToken{
             delete _index;
             delete _indexs;
             delete _status;
-            for(uint i = 0; i < 21; i ++) {
-                for(uint j = 0; j < 21; j ++) {
-                    _board[i][j] = 0;
-                }
-        }
         }
         
     }
 
-    function checkGameOver(uint8 index, uint8 indexs, uint8 status) public returns(bool) {
-        uint8 currentPlayerRes = status;
-        uint8 columnCount = 0;
-        uint8 winlen = 2;
-        //uint8[21][21] _board = new uint8[21][21](0);
-        
-        for (uint8 i = indexs + 1; i < 20; i++) {
-            if (_board[i][index] == currentPlayerRes) {
-                columnCount++;
-            } else {
-                break;
-            }
-        }
-        for (uint8 i = indexs - 1; i >= 0; i--) {
-            if (_board[i][index] == currentPlayerRes) {
-                columnCount++;
-            } else {
-                break;
-            }
-        }
-        
-        // 向下下棋
-        tmp1 = columnCount;
-        if (columnCount >= winlen) {
-           // this.defineWinned(_currentPlayer);
-            columnCount = 0;
-            return true;
-        }
-        //行计数
-        
-        uint8 lineCount = 0;
-        // 向左下棋
-        for (uint8 i = index + 1; i < 20; i++) {
-            if (_board[indexs][i] == currentPlayerRes) {
-                lineCount++;
-            } else {
-                break;
-            }
-        }
-        // 向右下棋
-        for (uint8 i = index - 1; i >= 0; i--) {
-            if (_board[indexs][i] == currentPlayerRes) {
-                lineCount++;
-            } else {
-                break;
-            }
-        }
-        tmp2 = lineCount;
-        if (lineCount >= winlen) {
-           // this.defineWinned(_currentPlayer);
-            lineCount = 0;
-            return true;
-        }
-        //斜行计数-左斜 \
-        uint8 obliqueLeftCount = 0;
-        // 向左上下棋↖
-        uint8 i = indexs + 1;
-        uint8 j = index + 1;
-        while(i < 20 && j < 20) {
-             if (_board[i][j] == currentPlayerRes) {
-                obliqueLeftCount++;
-            } else {
-                break;
-            }
-            i ++;
-            j ++;
-        }
-        // 向左下下棋↘
-        i = indexs - 1;
-        j = index - 1;
-        while(i >= 0 && j >= 0) {
-             if (_board[i][j] == currentPlayerRes) {
-                obliqueLeftCount++;
-            } else {
-                break;
-            }
-            i --;
-            j --;
-        }
-        tmp3 = obliqueLeftCount;
-        if (obliqueLeftCount >= winlen) {
-           // this.defineWinned(_currentPlayer);
-            obliqueLeftCount = 0;
-            return true;
-        }
-        //斜行计数-右斜 /
-        uint8 obliqueRightCount = 0;
-        // 向右上下棋↗
-        i = indexs + 1;
-        j = index - 1;
-        while(i < 20 && j >= 0) {
-            if (_board[i][j] == currentPlayerRes) {
-                obliqueRightCount++;
-            } else {
-                break;
-            }
-            i = i + 1;
-            j = j - 1;
-        }
-        i = indexs- 1;
-        j = index + 1;
-        while(i >= 0 && j < 20) {
-            if (_board[i][j] == currentPlayerRes) {
-                obliqueRightCount++;
-            } else {
-                break;
-            }
-            i--;
-            j++;
-        }
-        tmp4 = obliqueRightCount;
-        if (obliqueRightCount >= winlen) {
-           // this.defineWinned(_currentPlayer);
-            obliqueRightCount = 0;
-            return true;
-        }
-        return false;
-    }
     
     function getTmp() public view returns(uint8, uint8, uint8, uint8, uint8 [25][25] memory) {
         return (tmp1, tmp2, tmp3, tmp4, _board);
@@ -359,42 +189,22 @@ contract MemoryToken{
         playLock = true;
         //checkGameOver(index, indexs, status);
         if(isWinner == true) {
-            //if(checkGameOver(index, indexs, status)) {
-                require(address(this).balance >= _bonus);
-                address(msg.sender).transfer(_bonus);
-                isOver = true;
-            //} else {
-            //     revert();
-            //}
+            require(address(this).balance >= _bonus);
+            address(msg.sender).transfer(_bonus);
+            isOver = true;
         }
-        _board[indexs][index] = status;
         _index.push(index);
         _indexs.push(indexs);
         _status.push(status);
         _currentPlayer ^= 0x01 ;
-        // If the game is won , send the pot to the winner
-        
-        // if (this.checkGameOver(index, indexs)) {
-        //     return (true,  _board [index][indexs]);
-        //  }
-        // Flip the current player
-       // _currentPlayer = _currentPlayer == 0? 1:0;
-
-        // start the clock for the next move
+       
         _turnDeadline = block.number + _turnLength ;
         playLock = false;
         return (false,  _currentPlayer);
     }
-    function playMoveNew() public returns(string memory){
-        return "Hello!%";
-    }
 
-    // // Default the game if a player takes too long to submit a move
-    // function defaultGame () public {
-    //     if (block.number + _turnLength > _turnDeadline)
-    //         //defineWinned(_currentPlayer^0x01);
-    // }
 
+    
     
 
 }
